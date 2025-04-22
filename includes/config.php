@@ -14,6 +14,7 @@ define('RAIZ_APP', __DIR__);
 define('RUTA_APP', '/codigo/brigit');
 define('RUTA_IMGS', RUTA_APP.'/img');
 define('RUTA_CSS', RUTA_APP.'/css');
+define('RUTA_BOOTSTRAP', RUTA_APP.'/bootstrap/css');
 define('RUTA_JS', RUTA_APP.'/js');
 define('RUTA_FNT', RUTA_APP.'/includes/fonts');
 

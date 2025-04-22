@@ -10,13 +10,6 @@ function mostrarSaludo()
 }
 ?>
 <header>
-	<div id="menu">
-		<a href="sobrenosotros.php">Sobre nosotros</a>
-		<a href="creador.php">Creador</a>
-		<a href="ranking.php">Ranking</a>
-		<a href="buscador.php">Buscador</a>
-		<a href="foros.php">Foros</a>
-	</div>
 	<div id="logoandlogin">
 		<h1><a href="homepage.php">brigit.com</a></h1>
 		<div class="saludo">
