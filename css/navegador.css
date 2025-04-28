@@ -94,8 +94,8 @@ div#foros {
 	src: url('/codigo/brigit/fonts/AlbraBlack.ttf') format('truetype');
 }
 
-header,
-footer {
+div[class="row header"],
+div[class="row footer"] {
 	box-sizing: border-box;
 	height: 8%;
 	padding-left: 5%;
@@ -104,24 +104,23 @@ footer {
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	border-radius: 50px;
+	border-radius: 100px;
 }
 
-div#logoandlogin {
+#logoandlogin {
 	display: flex;
 	align-items: center;
 	height: 100%;
+}
 
-	h1 {
-		background-image: url('/codigo/brigit/images/whiteslavetrade.jpg');
-		background-size: cover;
-		background-position: center;
-		background-clip: text;
-		-webkit-text-fill-color: transparent;
-		font-family: 'AlbraBlack', serif;
-		font-size: 620%;
-	}
-
+.logo {
+	background-image: url('/codigo/brigit/images/whiteslavetrade.jpg');
+	background-size: cover;
+	background-position: center;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	font-family: 'AlbraBlack', serif;
+	font-size: 120%;
 }
 
 div#menu {
