@@ -28,6 +28,13 @@
 				?>
 			</div>
 		</div>
+		<div class="row header2">
+			<div class="col">
+				<?php
+				require(RAIZ_APP . '/vistas/comun/header2.php');
+				?>
+			</div>
+		</div>
 		<div class="row main">
 			<div class="col">
 				<main>

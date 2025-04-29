@@ -1,24 +1,43 @@
 /*-----------------------------------NAVIGATOR--------------------------*/
 
-html, body {
+html,
+body {
 	background-color: white;
 	width: 100%;
+	height: 100%;
 	margin: 0%;
 }
 
-div#contenedor {
-	width: 90%;
-	height: 90%;
-	margin: 5%;
+#contenedor {
 	background-color: #2d2428;
+	width: 98%;
+	height: 98%;
+	margin: 1%;
+}
+
+/*----------------------------------ROW MENU---------------------------*/
+
+#colaboutus {
+	padding-left: 50px;
+}
+
+.row.menu {
+	height: 25px;
+}
+
+.row.menu * {
+	font-family: 'Times New Roman', Times, serif;
+	font-style: italic;
+	color: #f8eaf1;
 }
 
 /*----------------------------------ROW HEADER--------------------------*/
 
-div.row.header {
-	height: 100%;
+div.row.header .col {
+	padding: 0px 8% 0px 8%;
 }
-div.row.header .col{
+
+.navbar.navbar-expand-lg {
 	padding: 0% 5% 0% 5%;
 	background-image: url('/codigo/brigit/images/2.png');
 	background-size: cover;
@@ -27,8 +46,10 @@ div.row.header .col{
 	border-radius: 100px;
 }
 
-.navbar.navbar-expand-lg {
-	padding: 0%;
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .logo {
@@ -38,25 +59,61 @@ div.row.header .col{
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 	font-family: 'AlbraBlack', serif;
-	font-size: 400%;
+	font-size: 80px;
 }
 
-.row.header a:link,
-.row.header a:visited {
-	font-weight: bold;
-	text-decoration: none;
+div.saludo span {
+	color: #2d2428;
+	background-color: #F8EAF1;
+	font-family: 'Times New Roman', Times, serif;
 }
 
-div.saludo a:hover {
-	color: red;
+div.saludo a {
+	color: #2d2428;
 	font-weight: bold;
-	text-decoration: underline;
+	font-family: 'Impact', sans-serif;
+	font-size: 200%;
+}
+
+div.saludo label {
+	margin: 0;
+}
+
+@media (max-width: 576px) {
+	.logo {
+		font-size: 0;
+		/* Oculta el texto real */
+		position: relative;
+	}
+
+	.logo::before {
+		content: "brigit";
+		font-size: 80px;
+		/* Restaura el tamaño para el texto ficticio */
+	}
+}
+
+@media (max-width: 992px) {
+	.saludo {
+		font-size: 0;
+		/* Oculta el texto real */
+		position: relative;
+	}
+}
+
+/*----------------------------ROW MAIN----------------------------------*/
+
+div.row.main .col {
+	padding: 5% 10% 10% 10%;
 }
 
 /*--------------------------ROW FOOTER----------------------------------*/
 
 div.row.footer .col {
-	padding: 0;
+	padding: 0px 8% 0px 8%;
+}
+
+footer{
 	background-image: url('/codigo/brigit/images/2.png');
 	background-size: cover;
 	background-position: center;
@@ -145,20 +202,6 @@ div#menu {
 	width: 100%;
 }
 
-
-main {
-	box-sizing: border-box;
-	margin: 10% 5% 0% 5%;
-	width: 90%;
-	height: 65%;
-	background-color: #F8EAF1;
-}
-
-div.saludo a,
-div.saludo p {
-	display: inline-block;
-	background-color: #F8EAF1;
-}
 
 fieldset {
 	margin: 5%;
