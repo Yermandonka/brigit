@@ -20,7 +20,7 @@ function mostrarSaludo()
   </button>
 
   <!-- Contenido colapsable -->
-  <div class="collapse navbar-collapse" id="navbarSupportedContent d-lg-none">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <!-- Lista de enlaces que aparecerán en el menú hamburguesa -->
     <ul class="navbar-nav mr-auto">
       <li class="nav-item d-lg-none">
@@ -33,7 +33,7 @@ function mostrarSaludo()
         <a class="nav-link" href="ranking.php">Ranking</a>
       </li>
     </ul>
-    <div id="logoandlogin">
+    <div id="logoandlogin" class="saludo">
       <?php mostrarSaludo(); ?>
     </div>
   </div>
