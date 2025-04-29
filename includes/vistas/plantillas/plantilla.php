@@ -15,34 +15,34 @@
 </head>
 
 <body>
-	<div id="contenedor">
-		<div class="row menu">
+	<div id="container-fluid">
+		<div class="row menu w-100">
 			<?php
 			require(RAIZ_APP . '/vistas/comun/menu.php');
 			?>
 		</div>
-		<div class="row header">
+		<div class="row header w-100">
 			<div class="col">
 				<?php
 				require(RAIZ_APP . '/vistas/comun/header.php');
 				?>
 			</div>
 		</div>
-		<div class="row header2">
+		<div class="row header2 w-100">
 			<div class="col">
 				<?php
-				require(RAIZ_APP . '/vistas/comun/header2.php');
+				require(RAIZ_APP . '/vistas/comun/navbar.php');
 				?>
 			</div>
 		</div>
-		<div class="row main">
+		<div class="row main w-100">
 			<div class="col">
 				<main>
 					<?= $contenidoPrincipal ?>
 				</main>
 			</div>
 		</div>
-		<div class="row footer">
+		<div class="row footer w-100">
 			<div class="col">
 				<?php
 				require(RAIZ_APP . '/vistas/comun/footer.php');

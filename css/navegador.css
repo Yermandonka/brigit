@@ -2,17 +2,27 @@
 
 html,
 body {
-	background-color: white;
+	background-color: #f8eaf1;
 	width: 100%;
 	height: 100%;
 	margin: 0%;
 }
 
-#contenedor {
+#container-fluid {
 	background-color: #2d2428;
-	width: 98%;
-	height: 98%;
-	margin: 1%;
+	width: 99%;
+	height: 99%;
+	margin: 0.5%;
+}
+
+* * {
+	color: #F8EAF1;
+	font-family: 'Times New Roman', Times, serif;
+}
+
+.row {
+	margin-right: 0;
+	margin-left: 0;
 }
 
 /*----------------------------------ROW MENU---------------------------*/
@@ -22,7 +32,7 @@ body {
 }
 
 .row.menu {
-	height: 25px;
+	padding-top: 8px;
 }
 
 .row.menu * {
@@ -34,7 +44,7 @@ body {
 /*----------------------------------ROW HEADER--------------------------*/
 
 div.row.header .col {
-	padding: 0px 8% 0px 8%;
+	padding: 5px 8% 0px 8%;
 }
 
 .navbar.navbar-expand-lg {
@@ -47,9 +57,9 @@ div.row.header .col {
 }
 
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .logo {
@@ -69,42 +79,18 @@ div.saludo span {
 }
 
 div.saludo a {
-	color: #2d2428;
+	color: black;
 	font-weight: bold;
 	font-family: 'Impact', sans-serif;
 	font-size: 200%;
 }
 
+div.saludo a:hover {
+	color: #2d2428;
+}
+
 div.saludo label {
 	margin: 0;
-}
-
-@media (max-width: 576px) {
-	.logo {
-		font-size: 0;
-		/* Oculta el texto real */
-		position: relative;
-	}
-
-	.logo::before {
-		content: "brigit";
-		font-size: 80px;
-		/* Restaura el tamaño para el texto ficticio */
-	}
-}
-
-@media (max-width: 992px) {
-	.saludo {
-		font-size: 0;
-		/* Oculta el texto real */
-		position: relative;
-	}
-}
-
-/*----------------------------ROW MAIN----------------------------------*/
-
-div.row.main .col {
-	padding: 5% 10% 10% 10%;
 }
 
 /*--------------------------ROW FOOTER----------------------------------*/
@@ -113,12 +99,94 @@ div.row.footer .col {
 	padding: 0px 8% 0px 8%;
 }
 
-footer{
+footer {
 	background-image: url('/codigo/brigit/images/2.png');
+	opacity: 0.75;
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	border-radius: 100px;
+}
+
+/*----------------------------ROW MAIN----------------------------------*/
+
+div.row.main .col {
+	padding: 2% 8% 10% 8%;
+}
+
+div.row.search .col {
+	padding: 0;
+	display: flex;
+	justify-content: center;
+}
+
+form.form-inline {
+	width: 60%;
+	display: flex;
+	justify-content: center;
+}
+
+input.form-control {
+	font-family: 'Impact', sans-serif;
+	border: 0px;
+	background-color: #F8EAF1;
+	border-radius: 15px;
+	width: 60% !important;
+}
+
+button.btn {
+	border-color: #F8EAF1;
+	color: #F8EAF1;
+	border-radius: 15px;
+	font-family: 'Times New Roman', Times, serif;
+}
+
+button.btn:hover {
+	color: black;
+	border-color: #F8EAF1;
+	background-color: #F8EAF1;
+}
+
+div.row.funcionalidades a {
+	font-family: 'Times New Roman', Times, serif;
+	padding: 5% 0% 5% 0%;
+	display: flex;
+	justify-content: center;
+	font-style: italic;
+	font-weight: bold;
+	border-radius: 50px;
+}
+
+div.row.funcionalidades {
+	margin-top: 1%;
+}
+
+div.row.funcionalidades .funcionalidad {
+	padding: 1%;
+}
+
+div.funcionalidades a {
+	font-size: 300%;
+	opacity: 80%;
+	color: black;
+}
+
+div#creador a {
+	background-image: url('/codigo/brigit/images/littlegirlinabluearmchair.png');
+}
+
+div#ranking a {
+	background-image: url('/codigo/brigit/images/cocktails.png');
+	color: white;
+}
+
+div#buscador a {
+	background-image: url('/codigo/brigit/images/maninavest.png');
+	color: white;
+}
+
+div#foros a {
+	background-image: url('/codigo/brigit/images/thefightingtemeraire.png');
 }
 
 article {
@@ -128,80 +196,10 @@ article {
 	margin: 0%;
 }
 
-div.funcionalidades {
-	display: flex;
-	gap: 10%;
-	height: 25%;
-}
-
-div#funcionalidades2 {
-	margin-top: 5%;
-}
-
-div.funcionalidad a:link,
-div.funcionalidad a:visited {
-	font-size: 300%;
-	color: #2d2428;
-	font-weight: bold;
-	text-decoration: none;
-}
-
-div.funcionalidad a:hover {
-	text-decoration: underline;
-}
-
-div.funcionalidad {
-	box-sizing: border-box;
-	padding: 4% 0% 4% 0%;
-	display: flex;
-	justify-content: center;
-	width: 45%;
-	height: 100%;
-	background-image: url('/codigo/brigit/images/whiteslavetrade.jpg');
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	font-style: italic;
-	font-weight: bolder;
-	color: white;
-	border-radius: 50px;
-}
-
-div#creador {
-	background-image: url('/codigo/brigit/images/littlegirlinabluearmchair.png');
-}
-
-div#ranking {
-	background-image: url('/codigo/brigit/images/cocktails.png');
-
-	a:link,
-	a:visited {
-		color: #F8EAF1;
-	}
-}
-
-div#buscador {
-	background-image: url('/codigo/brigit/images/maninavest.png');
-
-	a:link,
-	a:visited {
-		color: #F8EAF1;
-	}
-}
-
-div#foros {
-	background-image: url('/codigo/brigit/images/thefightingtemeraire.png');
-}
-
 @font-face {
 	font-family: 'AlbraBlack';
 	src: url('/codigo/brigit/fonts/AlbraBlack.ttf') format('truetype');
 }
-
-div#menu {
-	width: 100%;
-}
-
 
 fieldset {
 	margin: 5%;
@@ -221,6 +219,9 @@ input {
 
 legend {
 	color: #42293B;
+	width: 200px;
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 20px;
 	font-weight: bold;
 	background-image: url('/codigo/brigit/images/1.png');
 	background-size: cover;
@@ -301,7 +302,8 @@ form button.enlace:hover {
 
 button,
 a.boton {
-	border: 1px solid black;
+	border: 0px;
+	color: black;
 	border-radius: 4px;
 	background-color: #F8EAF1;
 	font-family: 'Times New Roman', Times, serif;
@@ -321,4 +323,45 @@ a.boton {
 
 a.deshabilitado {
 	color: rgba(16, 16, 16, 0.3);
+}
+
+/*----------------------------RESPONSIVE----------------------------------*/
+
+@media (max-width: 768px) {
+	.logo {
+		font-size: 0;
+		position: relative;
+	}
+
+	.logo::before {
+		content: "brigit";
+		font-size: 60px;
+	}
+
+	#container-fluid {
+		width: 100%;
+		height: 100%;
+		margin: 0%;
+	}
+
+	form.form-inline {
+		width: 80%;
+	}
+
+	div.funcionalidades a {
+		font-size: 200%;
+		color: #2d2428;
+	}
+
+	div.row.funcionalidades .funcionalidad {
+		padding: 1% 10% 1% 10%;
+	}
+
+}
+
+@media (max-width: 992px) {
+	.saludo {
+		font-size: 0;
+		position: relative;
+	}
 }

@@ -6,7 +6,7 @@ $wordAppService = wordAppService::GetSingleton();
 
 $words = $wordAppService->getAllWords();
 
-$tituloPagina = 'Buscador';
+$tituloPagina = 'Search Page';
 
 $contenidoPrincipal = <<<EOS
 <h1>Lista de Palabras</h1>

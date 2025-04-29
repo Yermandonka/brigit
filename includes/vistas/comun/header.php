@@ -2,9 +2,9 @@
 function mostrarSaludo()
 {
   if (isset($_SESSION["login"]) && ($_SESSION["login"] === true)) {
-    echo "<label>Bienvenido, " . $_SESSION['nombre'] . ".<a href='logout.php'>(salir)</a></label>";
+    echo "<label><span>Bienvenido, " . $_SESSION['nombre'] . ".</span><a href='logout.php'>(salir)</a></label>";
   } else {
-    echo "<label><span>Usuario desconocido</span> <a href='login.php'>LOGIN</a> <a href='register.php'>REGISTRO</a></label>";
+    echo "<label><span>Usuario desconocido</span> <a href='login.php'>LOGIN</a> <a href='registro.php'>REGISTRO</a></label>";
   }
 }
 ?>
