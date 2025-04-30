@@ -9,70 +9,58 @@ CREATE USER 'brigit'@'localhost' IDENTIFIED BY 'brigit';
 GRANT ALL PRIVILEGES ON `brigit`.* TO 'brigit'@'localhost';
 
 /*
-  Recuerda que deshabilitar la opción "Enable foreign key checks" para evitar problemas a la hora de importar el script.
+  Remember to disable the option "Enable foreign key checks" to avoid issues when importing the script.
 */
 USE brigit;
-DROP TABLE IF EXISTS `RolesUsuario`;
+DROP TABLE IF EXISTS `UserRoles`;
 DROP TABLE IF EXISTS `Roles`;
-DROP TABLE IF EXISTS `Usuarios`;
-DROP TABLE IF EXISTS `Palabras`;
+DROP TABLE IF EXISTS `Words`;
+DROP TABLE IF EXISTS `Users`;
 
 CREATE TABLE IF NOT EXISTS `Roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
+  `name` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE IF NOT EXISTS `RolesUsuario` (
-  `usuario` int(11) NOT NULL,
-  `rol` int(11) NOT NULL,
-  PRIMARY KEY (`usuario`, `rol`),
-  KEY `rol` (`rol`),
-  CONSTRAINT `fk_rolesusuario_usuario`
-    FOREIGN KEY (`usuario`) REFERENCES `Usuarios`(`id`)
-    ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE IF NOT EXISTS `Usuarios` (
+CREATE TABLE IF NOT EXISTS `Users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombreUsuario` varchar(30) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
+  `username` varchar(30) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
   `password` varchar(70) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE IF NOT EXISTS `Palabras` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `palabra` varchar(30) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
-  `significado` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
-  `creador` varchar(30) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
-  `votos` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `fk_palabras_creador`
-    FOREIGN KEY (`creador`) REFERENCES `Usuarios`(`nombreUsuario`)
+CREATE TABLE IF NOT EXISTS `UserRoles` (
+  `user` int(11) NOT NULL,
+  `role` int(11) NOT NULL,
+  PRIMARY KEY (`user`, `role`),
+  KEY `role` (`role`),
+  CONSTRAINT `fk_userroles_user`
+    FOREIGN KEY (`user`) REFERENCES `Users`(`id`)
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-DELIMITER $$
-
-CREATE TRIGGER `RolesUsuario` 
-AFTER INSERT ON `Usuarios`
-FOR EACH ROW 
-BEGIN
-  INSERT INTO RolesUsuario (usuario, rol)
-  VALUES (NEW.id, 2);
-END $$
-
-DELIMITER ;
+CREATE TABLE IF NOT EXISTS `Words` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `word` varchar(30) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
+  `meaning` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
+  `creator` varchar(30) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
+  `votes` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_words_creator`
+    FOREIGN KEY (`creator`) REFERENCES `Users`(`username`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*
-  Recuerda que deshabilitar la opción "Enable foreign key checks" para evitar problemas a la hora de importar el script.
+  Remember to disable the option "Enable foreign key checks" to avoid issues when importing the script.
 */
-use brigit;
-TRUNCATE TABLE `RolesUsuario`;
+USE brigit;
+TRUNCATE TABLE `UserRoles`;
 TRUNCATE TABLE `Roles`;
-TRUNCATE TABLE `Usuarios`;
+TRUNCATE TABLE `Users`;
 
-INSERT INTO `Roles` (`id`, `nombre`) VALUES
+INSERT INTO `Roles` (`id`, `name`) VALUES
 (1, 'admin'),
 (2, 'user');
 
@@ -80,6 +68,10 @@ INSERT INTO `Roles` (`id`, `nombre`) VALUES
   user: userpass
   admin: adminpass
 */
-INSERT INTO `Usuarios` (`id`, `nombreUsuario`, `password`) VALUES
+INSERT INTO `Users` (`id`, `username`, `password`) VALUES
 (1, 'admin', '$2y$10$O3c1kBFa2yDK5F47IUqusOJmIANjHP6EiPyke5dD18ldJEow.e0eS'),
 (2, 'user', '$2y$10$uM6NtF.f6e.1Ffu2rMWYV.j.X8lhWq9l8PwJcs9/ioVKTGqink6DG');
+
+INSERT INTO `UserRoles` (`user`, `role`) VALUES
+(1, '1'),
+(2, '2');

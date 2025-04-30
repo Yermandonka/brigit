@@ -6,6 +6,7 @@ use codigo\brigit\includes\usuarios\userDTO;
 
 class FormularioLogin extends Formulario
 {
+    private $redirect = null;
     public function __construct() 
     {
         parent::__construct('loginForm');
@@ -14,6 +15,10 @@ class FormularioLogin extends Formulario
     protected function CreateFields($datos)
     {
         $nombreUsuario = '';
+
+        if (isset($_POST['redirect'])) {
+            $this->redirect = $_POST['redirect'];
+        }
         
         if ($datos) 
         {
@@ -25,13 +30,12 @@ class FormularioLogin extends Formulario
             <legend>Login</legend>
             <p><label>Nombre:</label> <input type="text" name="nombreUsuario" value="$nombreUsuario"/></p>
             <p><label>Password:</label> <input type="password" name="password" /></p>
-            <button type="submit" name="login">Entrar</button>
+            <div class="buttonform"><button id="login" type="submit" name="login">Entrar</button></div>
         </fieldset>
 EOF;
         return $html;
     }
     
-
     protected function Process($datos)
     {
         $result = array();
@@ -74,6 +78,11 @@ EOF;
                 $_SESSION["login"] = true;
                 $_SESSION["nombre"] = $nombreUsuario;
 
+                if ($this->redirect != null) {
+                    $result = $this->redirect;
+                } else {
+                    $result = 'homepage.php';
+                }
                 $result = 'homepage.php';
             }
         }

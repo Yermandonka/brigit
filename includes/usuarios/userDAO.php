@@ -27,7 +27,7 @@ class userDAO extends baseDAO implements IUser
 
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT id, nombreUsuario, password FROM Usuarios U WHERE U.nombreUsuario = ?";
+        $query = "SELECT id, username, password FROM Users U WHERE U.username = ?";
 
         $stmt = $conn->prepare($query);
 
@@ -61,14 +61,23 @@ class userDAO extends baseDAO implements IUser
 
             $conn = Aplicacion::getInstance()->getConexionBd();
 
-            $query = "INSERT INTO Usuarios(nombreUsuario, password) VALUES (?, ?)";
+            $query = "INSERT INTO Users(username, password) VALUES (?, ?)";
 
             $stmt = $conn->prepare($query);
 
             $stmt->bind_param("ss", $escUserName, $hashedPassword);
 
             if ($stmt->execute()) {
-                $idUser = $conn->insert_id;
+                $user = $this->buscaUsuario($escUserName);
+                $idUser = 0;
+                if ($user->id() != false) {
+                    $idUser = $this->buscaUsuario($escUserName)->id();
+                }
+                $roleId = 2;
+                $queryRole = "INSERT INTO UserRoles(user, role) VALUES (?, ?)";
+                $stmtRole = $conn->prepare($queryRole);
+                $stmtRole->bind_param("ii", $idUser, $roleId);
+                $stmtRole->execute();
 
                 $createdUserDTO = new userDTO($idUser, $userDTO->nombreUsuario(), $userDTO->password());
 

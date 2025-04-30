@@ -20,7 +20,7 @@ class FormularioPalabra extends Formulario
             <legend>Crea una palabra</legend>
             <p><label>Palabra:</label> <input type="text" name="palabra"/></p>
             <p><label>Significado:</label> <textarea type="text" name="significado" placeholder="Máximo 500 carácteres"/></textarea></p>
-            <button type="submit" name="crearPalabra">Crear</button>
+            <div class="buttonform"><button type="submit" name="crearPalabra">Crear</button></div>
         </fieldset>
         
 EOF;
@@ -40,6 +40,10 @@ EOF;
         {
             $result[] = "La palabra no puede estar vacía";
         }
+
+        if (strpos($palabra, ' ') !== false) {
+            $result[] = "Solo puede ser una palabra.";
+        }
         
         $significado = trim($datos['significado'] ?? '');
         
@@ -53,7 +57,7 @@ EOF;
         if (strlen($significado) > 500) {
             $result[] = "El significado no puede tener más de 500 caracteres.";
         }
-        
+    
         if (count($result) === 0) 
         {
             try

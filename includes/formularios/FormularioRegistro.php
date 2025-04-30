@@ -27,7 +27,7 @@ class FormularioRegistro extends Formulario
             <p><label>Nombre:</label> <input type="text" name="nombreUsuario" value="$nombreUsuario"/></p>
             <p><label>Password:</label> <input type="password" name="password" /></p>
             <p><label>Re-Password:</label> <input type="password" name="rePassword" /></p>
-            <button type="submit" name="login">Entrar</button>
+            <div class="buttonform"><button type="submit" name="login">Entrar</button></div>
         </fieldset>
 EOF;
         return $html;

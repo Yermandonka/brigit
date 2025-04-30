@@ -8,6 +8,10 @@ body {
 	margin: 0%;
 }
 
+html{
+	height: 120%;
+}
+
 #container-fluid {
 	background-color: #2d2428;
 	width: 99%;
@@ -47,19 +51,16 @@ div.row.header .col {
 	padding: 5px 8% 0px 8%;
 }
 
-.navbar.navbar-expand-lg {
-	padding: 0% 5% 0% 5%;
-	background-image: url('/codigo/brigit/images/2.png');
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	border-radius: 100px;
+a.nav-link {
+	padding: 0;
+	color: #F8EAF1;
+	font-family: 'Times New Roman', Times, serif;
+	font-style: italic;
+	font-size: 100%;
 }
 
-.navbar {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+a.nav-link:hover {
+	text-decoration: underline;
 }
 
 .logo {
@@ -72,25 +73,75 @@ div.row.header .col {
 	font-size: 80px;
 }
 
-div.saludo span {
+div.saludo span,
+div#saludo span {
 	color: #2d2428;
 	background-color: #F8EAF1;
 	font-family: 'Times New Roman', Times, serif;
 }
 
-div.saludo a {
+div.saludo a,
+div#saludo a {
 	color: black;
 	font-weight: bold;
 	font-family: 'Impact', sans-serif;
 	font-size: 200%;
 }
 
+/*----------------------------------ROW NAVBAR--------------------------*/
+
+.navbar {
+	padding: 0% 5% 0% 5%;
+	background-image: url('/codigo/brigit/images/2.png');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 100px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+div.row.header2 .col {
+	padding: 5px 8% 0px 8%;
+}
+
+.navbar2 * {
+	display: flex;
+	justify-content: center;
+}
+
+.navbar2 {
+	display: flex;
+	justify-content: center;
+	border-radius: 100px;
+}
+
+div#navbarSupportedContent,
+ul.navbar-nav.mr-auto {
+	margin: 0 !important;
+}
+
+div#saludo a {
+	color: white;
+}
+
+div#saludo a:hover {
+	color: black;
+}
+
 div.saludo a:hover {
 	color: #2d2428;
 }
 
-div.saludo label {
+div.saludo label,
+div#saludo label {
 	margin: 0;
+}
+
+button.navbar-toggler {
+	border: 2px solid #2d2428;
+	border-radius: 10px;
 }
 
 /*--------------------------ROW FOOTER----------------------------------*/
@@ -101,7 +152,8 @@ div.row.footer .col {
 
 footer {
 	background-image: url('/codigo/brigit/images/2.png');
-	opacity: 0.75;
+	opacity: 0.9;
+	color: black;
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -111,7 +163,7 @@ footer {
 /*----------------------------ROW MAIN----------------------------------*/
 
 div.row.main .col {
-	padding: 2% 8% 10% 8%;
+	padding: 5% 8% 8% 8%;
 }
 
 div.row.search .col {
@@ -121,6 +173,7 @@ div.row.search .col {
 }
 
 form.form-inline {
+	margin: 0 !important;
 	width: 60%;
 	display: flex;
 	justify-content: center;
@@ -158,16 +211,15 @@ div.row.funcionalidades a {
 }
 
 div.row.funcionalidades {
-	margin-top: 1%;
+	margin-top: 5%;
 }
 
 div.row.funcionalidades .funcionalidad {
-	padding: 1%;
+	padding: 2%;
 }
 
 div.funcionalidades a {
 	font-size: 300%;
-	opacity: 80%;
 	color: black;
 }
 
@@ -189,37 +241,21 @@ div#foros a {
 	background-image: url('/codigo/brigit/images/thefightingtemeraire.png');
 }
 
-article {
-	background-color: #2d2428;
-	height: 100%;
-	width: 100%;
-	margin: 0%;
-}
-
 @font-face {
 	font-family: 'AlbraBlack';
 	src: url('/codigo/brigit/fonts/AlbraBlack.ttf') format('truetype');
 }
 
-fieldset {
-	margin: 5%;
-	border: 1px solid #F8EAF1;
-}
-
-fieldset div {
-	justify-content: center;
-	margin: 5px auto;
-}
-
 input {
-	color: #42293B;
+	color: black;
 	border: 0px;
 	border-radius: 2px;
 }
 
 legend {
-	color: #42293B;
-	width: 200px;
+	color: black;
+	width: auto;
+	height: auto;
 	font-family: 'Times New Roman', Times, serif;
 	font-size: 20px;
 	font-weight: bold;
@@ -227,21 +263,28 @@ legend {
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	border: 1px solid #42293B;
-	padding: 2px 6px;
-}
-
-label {
-	margin-right: 0.5em;
-	color: #F8EAF1;
-	display: block;
+	padding: 0px 6px;
+	margin: 0;
 }
 
 textarea[name="significado"] {
 	width: 100%;
 	height: 100px;
 	font-family: 'Times New Roman', Times, serif;
+	color: black;
 }
+
+fieldset {
+	padding: 20px;
+	margin: 5%;
+	border: 1px solid #F8EAF1;
+}
+
+div.buttonform{
+	display: flex;
+	justify-content: center;
+}
+
 
 
 .form-field-error {
@@ -335,7 +378,7 @@ a.deshabilitado {
 
 	.logo::before {
 		content: "brigit";
-		font-size: 60px;
+		font-size: 70px;
 	}
 
 	#container-fluid {
@@ -352,6 +395,17 @@ a.deshabilitado {
 		font-size: 200%;
 		color: #2d2428;
 	}
+
+	.navbar2 div#saludo {
+		label {
+			align-items: baseline;
+		}
+
+		span {
+			font-size: 70%;
+		}
+	}
+
 
 	div.row.funcionalidades .funcionalidad {
 		padding: 1% 10% 1% 10%;

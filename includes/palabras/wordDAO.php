@@ -17,7 +17,7 @@ class wordDAO extends baseDAO implements IWord
 
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT id, palabra, significado, creador, votos FROM Palabras P WHERE P.palabra = ?";
+        $query = "SELECT id, word, meaning, creator, votes FROM Words W WHERE W.word = ?";
 
         $stmt = $conn->prepare($query);
 
@@ -58,7 +58,7 @@ class wordDAO extends baseDAO implements IWord
 
             $escVotos = $this->realEscapeString($wordDTO->votos());
 
-            $query = "INSERT INTO Palabras(palabra, significado, creador, votos) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO Words(word, meaning, creator, votes) VALUES (?, ?, ?, ?)";
 
             $stmt = $conn->prepare($query);
 
@@ -93,7 +93,7 @@ class wordDAO extends baseDAO implements IWord
     $words = [];
     $conn = Aplicacion::getInstance()->getConexionBd();
 
-    $query = "SELECT id, palabra, significado, creador, votos FROM Palabras";
+    $query = "SELECT id, word, meaning, creator, votes FROM Words";
 
     $stmt = $conn->prepare($query);
     $stmt->execute();
