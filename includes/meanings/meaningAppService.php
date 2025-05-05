@@ -38,6 +38,15 @@ class meaningAppService
         return $meanings;
     }
 
+    public function getAllVotes($word)
+    {
+        $IMeaningDAO = meaningFactory::CreateMeaning();
+
+        $meanings = $IMeaningDAO->getAllVotes($word);
+
+        return $meanings;
+    }
+
 }
 
 ?>

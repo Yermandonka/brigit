@@ -18,19 +18,20 @@ class RankingTable
         $filas = "";
         foreach ($words as $w) {
             $meanings = $meaningAppService->getAllMeanings($w->palabra());
+            $votes = $meaningAppService->getAllVotes($w->palabra());
             if (count($meanings) <= 1) {
                 $filas .= "<tr>
             <td>{$w->palabra()}</td>
-            <td>{$meanings}</td>
+            <td>{$meanings[0]->significado()}</td>
             <td>{$w->creador()}</td>
-            <td>{$w->votos()}</td>
+            <td>{$votes}</td>
         </tr>";
             } else {
                 $filas .= "<tr>
             <td>{$w->palabra()}</td>
             <td>Hay varios significados</td>
             <td>{$w->creador()}</td>
-            <td>{$w->votos()}</td>
+            <td>{$votes}</td>
         </tr>";
             }
         }

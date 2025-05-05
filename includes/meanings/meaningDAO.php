@@ -117,9 +117,11 @@ class meaningDAO extends baseDAO implements IMeaning
         $meanings = [];
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT id, word, meaning, creator, votes FROM Words";
+        $query = "SELECT id, word, meaning, creator, votes FROM meanings WHERE word = ?";
 
         $stmt = $conn->prepare($query);
+        
+        $stmt->bind_param("s", $word);
         $stmt->execute();
         $stmt->bind_result($id, $palabra, $significado, $creador, $votos);
 
@@ -127,9 +129,30 @@ class meaningDAO extends baseDAO implements IMeaning
             $meaning = new meaningDTO($id, $palabra, $significado, $creador, $votos);
             $meanings[] = $meaning;
         }
-
+    
         $stmt->close();
         return $meanings;
+    }
+
+    public function getAllVotes($word)
+    {
+        $votes = 0;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $query = "SELECT votes FROM meanings WHERE word = ?";
+
+        $stmt = $conn->prepare($query);
+        
+        $stmt->bind_param("s", $word);
+        $stmt->execute();
+        $stmt->bind_result($votos);
+
+        while ($stmt->fetch()) {
+            $votes += $votos;
+        }
+    
+        $stmt->close();
+        return $votes;
     }
 
 }

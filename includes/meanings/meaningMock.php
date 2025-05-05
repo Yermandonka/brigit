@@ -11,5 +11,10 @@ class meaningMock implements IMeaning
     {
         return [];
     }
+
+    public function getAllVotes($word)
+    {
+        return [];
+    }
 }
 ?>
