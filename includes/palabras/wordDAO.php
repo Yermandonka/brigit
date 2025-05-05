@@ -75,7 +75,6 @@ class wordDAO extends baseDAO implements IWord
         }
         catch(\mysqli_sql_exception $e)
         {
-            // código de violación de restricción de integridad (PK)
 
             if ($conn->sqlstate == 23000) 
             { 

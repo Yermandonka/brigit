@@ -9,14 +9,15 @@ function mostrarSaludo()
 }
 ?>
 
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg" style="background-image: url('<?php echo RUTA_APP; ?>/images/2.png');"
   <!-- Logo/Nombre del sitio -->
-  <a class="logo" href="homepage.php">brigit.com</a>
+  <a class="logo" href="index.php" style="background-image: url('<?php echo RUTA_APP; ?>/images/whiteslavetrade.jpg');">brigit.com</a>
+	
 
   <!-- Botón hamburguesa para móviles -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <img src="/codigo/brigit/images/menu.svg" alt="Menú" style="width: 30px; height: 30px;">
+    <img src="<?php echo RUTA_APP; ?>/images/menu.svg" alt="Menú" style="width: 30px; height: 30px;">
   </button>
 
   <div class="saludo">

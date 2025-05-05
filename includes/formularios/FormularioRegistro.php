@@ -79,7 +79,7 @@ EOF;
                     
                 $_SESSION["nombre"] = $nombreUsuario;
 
-                $result = 'homepage.php';
+                $result = 'index.php';
 
                 $app = Aplicacion::getInstance();
                 

@@ -1,5 +1,10 @@
 /*-----------------------------------NAVIGATOR--------------------------*/
 
+@font-face {
+    font-family: 'AlbraBlack';
+    src: url('../fonts/AlbraBlack.ttf') format('truetype');
+}
+
 html,
 body {
 	background-color: #f8eaf1;
@@ -64,7 +69,6 @@ a.nav-link:hover {
 }
 
 .logo {
-	background-image: url('/codigo/brigit/images/whiteslavetrade.jpg');
 	background-size: cover;
 	background-position: center;
 	background-clip: text;
@@ -92,7 +96,6 @@ div#saludo a {
 
 .navbar {
 	padding: 0% 5% 0% 5%;
-	background-image: url('/codigo/brigit/images/2.png');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -151,7 +154,6 @@ div.row.footer .col {
 }
 
 footer {
-	background-image: url('/codigo/brigit/images/2.png');
 	opacity: 0.9;
 	color: black;
 	background-size: cover;
@@ -202,12 +204,19 @@ button.btn:hover {
 
 div.row.funcionalidades a {
 	font-family: 'Times New Roman', Times, serif;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
 	padding: 5% 0% 5% 0%;
 	display: flex;
 	justify-content: center;
 	font-style: italic;
 	font-weight: bold;
 	border-radius: 50px;
+}
+
+div.row.funcionalidades a:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 div.row.funcionalidades {
@@ -223,27 +232,12 @@ div.funcionalidades a {
 	color: black;
 }
 
-div#creador a {
-	background-image: url('/codigo/brigit/images/littlegirlinabluearmchair.png');
-}
-
 div#ranking a {
-	background-image: url('/codigo/brigit/images/cocktails.png');
 	color: white;
 }
 
 div#buscador a {
-	background-image: url('/codigo/brigit/images/maninavest.png');
 	color: white;
-}
-
-div#foros a {
-	background-image: url('/codigo/brigit/images/thefightingtemeraire.png');
-}
-
-@font-face {
-	font-family: 'AlbraBlack';
-	src: url('/codigo/brigit/fonts/AlbraBlack.ttf') format('truetype');
 }
 
 input {
@@ -259,7 +253,7 @@ legend {
 	font-family: 'Times New Roman', Times, serif;
 	font-size: 20px;
 	font-weight: bold;
-	background-image: url('/codigo/brigit/images/1.png');
+	background-image: url('../images/1.png');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;

@@ -70,7 +70,7 @@ EOF;
 
                 $createdWordDTO = $wordAppService->create($wordDTO);
 
-                $result = 'homepage.php';
+                $result = 'index.php';
 
                 $app = Aplicacion::getInstance();
                 

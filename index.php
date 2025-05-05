@@ -2,7 +2,8 @@
 
 require_once __DIR__ . '/includes/config.php';
 
-$tituloPagina = 'Homepage';
+$tituloPagina = 'Index';
+$RUTA_APP = RUTA_APP;
 
 $contenidoPrincipal = <<<EOS
 <div class="row search">
@@ -16,16 +17,16 @@ $contenidoPrincipal = <<<EOS
 
 <div class="row funcionalidades">
 <div class="funcionalidad col-xs-12 col-md-6" id="creador">
-<a href="creador.php">Creador</a>
+<a href="creador.php" style="background-image: url('$RUTA_APP/images/littlegirlinabluearmchair.png');">Creador</a>
 </div>
 <div class="funcionalidad col-xs-12 col-md-6" id="ranking">
-<a href="ranking.php">Ranking</a>
+<a href="ranking.php" style="background-image: url('$RUTA_APP/images/cocktails.png');">Ranking</a>
 </div>
 <div class="funcionalidad col-xs-12 col-md-6" id="buscador">
-<a href="buscador.php">Buscador</a>
+<a href="buscador.php" style="background-image: url('$RUTA_APP/images/maninavest.png');">Buscador</a>
 </div>
 <div class="funcionalidad col-xs-12 col-md-6" id="foros">
-<a href="foros.php">Foros</a>
+<a href="foros.php" style="background-image: url('$RUTA_APP/images/thefightingtemeraire.png');">Foros</a>
 </div>
 </div>
 

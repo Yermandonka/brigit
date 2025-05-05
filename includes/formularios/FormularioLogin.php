@@ -81,9 +81,9 @@ EOF;
                 if ($this->redirect != null) {
                     $result = $this->redirect;
                 } else {
-                    $result = 'homepage.php';
+                    $result = 'index.php';
                 }
-                $result = 'homepage.php';
+                $result = 'index.php';
             }
         }
         return $result;

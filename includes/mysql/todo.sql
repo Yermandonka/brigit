@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS `Words`;
 DROP TABLE IF EXISTS `Users`;
 
 CREATE TABLE IF NOT EXISTS `Roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL AUTO_INCREMENT UNIQUE,
   `name` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `Users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE IF NOT EXISTS `UserRoles` (
-  `user` int(11) NOT NULL,
+  `user` int(11) NOT NULL UNIQUE,
   `role` int(11) NOT NULL,
   PRIMARY KEY (`user`, `role`),
   KEY `role` (`role`),
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `Words` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `word` varchar(30) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
   `meaning` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
-  `creator` varchar(30) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
+  `creator` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `votes` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_words_creator`
