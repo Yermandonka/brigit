@@ -1,12 +1,12 @@
 <?php
-use codigo\brigit\includes\palabras\wordAppService;
+use codigo\brigit\includes\words\wordAppService;
 require_once __DIR__.'/includes/config.php';
 
 $wordAppService = wordAppService::GetSingleton();
 
 $words = $wordAppService->getAllWords();
 
-$tituloPagina = 'Foros';
+$tituloPagina = 'MyArea';
 
 $contenidoPrincipal = <<<EOS
 <h1>Lista de Palabras</h1>

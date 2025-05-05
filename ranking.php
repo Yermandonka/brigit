@@ -1,5 +1,5 @@
 <?php
-use codigo\brigit\includes\tablas\RankingTable;
+use codigo\brigit\includes\tables\RankingTable;
 require_once __DIR__.'/includes/config.php';
 
 

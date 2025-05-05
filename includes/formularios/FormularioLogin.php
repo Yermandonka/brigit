@@ -1,8 +1,8 @@
 <?php
 namespace codigo\brigit\includes\formularios;
 use codigo\brigit\includes\formularios\Formulario;
-use codigo\brigit\includes\usuarios\userAppService;
-use codigo\brigit\includes\usuarios\userDTO;
+use codigo\brigit\includes\users\userAppService;
+use codigo\brigit\includes\users\userDTO;
 
 class FormularioLogin extends Formulario
 {

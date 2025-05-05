@@ -1,5 +1,5 @@
 <?php
-namespace codigo\brigit\includes\usuarios;
+namespace codigo\brigit\includes\users;
 interface IUser
 {
     public function login($userDTO);

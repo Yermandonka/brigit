@@ -1,9 +1,9 @@
 <?php
 namespace codigo\brigit\includes\formularios;
 use codigo\brigit\includes\formularios\Formulario;
-use codigo\brigit\includes\usuarios\userAppService;
-use codigo\brigit\includes\usuarios\userDTO;
-use codigo\brigit\includes\usuarios\userAlreadyExistException;
+use codigo\brigit\includes\users\userAppService;
+use codigo\brigit\includes\users\userDTO;
+use codigo\brigit\includes\users\userAlreadyExistException;
 use codigo\brigit\includes\Aplicacion;
 class FormularioRegistro extends Formulario
 {

@@ -1,6 +1,7 @@
 <?php
-namespace codigo\brigit\includes\tablas;
-use codigo\brigit\includes\palabras\WordAppService;
+namespace codigo\brigit\includes\tables;
+use codigo\brigit\includes\words\wordAppService;
+use codigo\brigit\includes\meanings\meaningAppService;
 class RankingTable
 {
     public function __construct()
@@ -12,22 +13,36 @@ class RankingTable
     {
         $wordAppService = wordAppService::GetSingleton();
         $words = $wordAppService->getAllWords();
+        $meaningAppService = meaningAppService::GetSingleton();
 
         $filas = "";
         foreach ($words as $w) {
-            $filas .= "<tr>
+            $meanings = $meaningAppService->getAllMeanings($w->palabra());
+            if (count($meanings) <= 1) {
+                $filas .= "<tr>
             <td>{$w->palabra()}</td>
-            <td>{$w->significado()}</td>
+            <td>{$meanings}</td>
             <td>{$w->creador()}</td>
             <td>{$w->votos()}</td>
         </tr>";
+            } else {
+                $filas .= "<tr>
+            <td>{$w->palabra()}</td>
+            <td>Hay varios significados</td>
+            <td>{$w->creador()}</td>
+            <td>{$w->votos()}</td>
+        </tr>";
+            }
         }
         return $filas;
     }
+
+
     public function manage()
     {
 
         $html = <<<EOF
+<div id="rankingTable">
     <h1>Lista de Palabras</h1>
     <table>
         <thead>
@@ -44,6 +59,7 @@ EOF;
         $html .= <<<EOF
         </tbody>
     </table>
+</div>
 EOF;
 
         return $html;

@@ -1,8 +1,8 @@
 <?php
-namespace codigo\brigit\includes\palabras;
-use codigo\brigit\includes\palabras\IWord;
-use codigo\brigit\includes\palabras\wordDAO;
-use codigo\brigit\includes\palabras\wordMock;
+namespace codigo\brigit\includes\words;
+use codigo\brigit\includes\words\IWord;
+use codigo\brigit\includes\words\wordDAO;
+use codigo\brigit\includes\words\wordMock;
 
 class wordFactory
 {

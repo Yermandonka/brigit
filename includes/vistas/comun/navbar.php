@@ -21,7 +21,7 @@
         <a class="nav-link" href="buscador.php">Buscador</a>
       </li>
       <li class="nav-item d-lg-none">
-        <a class="nav-link" href="foros.php">Foros</a>
+        <a class="nav-link" href="myArea.php">MyArea</a>
       </li>
     </ul>
   </div>

@@ -1,8 +1,8 @@
 <?php
-namespace codigo\brigit\includes\usuarios;
-use codigo\brigit\includes\usuarios\IUser;
-use codigo\brigit\includes\usuarios\userDAO;
-use codigo\brigit\includes\usuarios\userMock;
+namespace codigo\brigit\includes\users;
+use codigo\brigit\includes\users\IUser;
+use codigo\brigit\includes\users\userDAO;
+use codigo\brigit\includes\users\userMock;
 
 class userFactory
 {

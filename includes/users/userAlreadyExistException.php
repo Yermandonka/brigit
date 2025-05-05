@@ -1,7 +1,7 @@
 <?php
-namespace codigo\brigit\includes\palabras;
+namespace codigo\brigit\includes\users;
 
-class wordAlreadyExistException extends \Exception
+class userAlreadyExistException extends \Exception
 {
     function __construct(string $message = "" , int $code = 0 , \Throwable $previous = null )
     {

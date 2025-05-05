@@ -1,6 +1,6 @@
 <?php
-namespace codigo\brigit\includes\palabras;
-use codigo\brigit\includes\palabras\wordFactory;
+namespace codigo\brigit\includes\words;
+use codigo\brigit\includes\words\wordFactory;
 
 class wordAppService
 {

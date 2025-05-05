@@ -25,8 +25,8 @@ $contenidoPrincipal = <<<EOS
 <div class="funcionalidad col-xs-12 col-md-6" id="buscador">
 <a href="buscador.php" style="background-image: url('$RUTA_APP/images/maninavest.png');">Buscador</a>
 </div>
-<div class="funcionalidad col-xs-12 col-md-6" id="foros">
-<a href="foros.php" style="background-image: url('$RUTA_APP/images/thefightingtemeraire.png');">Foros</a>
+<div class="funcionalidad col-xs-12 col-md-6" id="myArea">
+<a href="myArea.php" style="background-image: url('$RUTA_APP/images/thefightingtemeraire.png');">MyArea</a>
 </div>
 </div>
 

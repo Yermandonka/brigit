@@ -362,6 +362,41 @@ a.deshabilitado {
 	color: rgba(16, 16, 16, 0.3);
 }
 
+div#aboutUs {
+	padding: 0 20px;
+}
+
+div#rankingTable table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    font-size: 1.2rem;
+    color: #F8EAF1;
+    background-color: #2e2327; /* un tono más suave que el fondo */
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+div#rankingTable th, div#rankingTable td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #544548;
+}
+
+div#rankingTable th {
+    background-color: #3a2e32;
+    color: #f7dddd;
+    font-weight: bold;
+    letter-spacing: 0.05rem;
+}
+
+div#rankingTable tr:hover {
+    background-color: #44373c;
+    transition: background-color 0.3s ease;
+}
+
+
 /*----------------------------RESPONSIVE----------------------------------*/
 
 @media (max-width: 768px) {

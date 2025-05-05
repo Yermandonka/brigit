@@ -1,5 +1,5 @@
 <?php
-namespace codigo\brigit\includes\palabras;
+namespace codigo\brigit\includes\words;
 interface IWord
 {
     public function create($wordDTO);

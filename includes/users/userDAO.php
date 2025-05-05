@@ -1,5 +1,5 @@
 <?php
-namespace codigo\brigit\includes\usuarios;
+namespace codigo\brigit\includes\users;
 use codigo\brigit\includes\Aplicacion;
 use codigo\brigit\includes\baseDAO;
 

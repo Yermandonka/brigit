@@ -1,5 +1,5 @@
 <?php
-namespace codigo\brigit\includes\palabras;
+namespace codigo\brigit\includes\words;
 use codigo\brigit\includes\Aplicacion;
 use codigo\brigit\includes\baseDAO;
 
@@ -17,7 +17,7 @@ class wordDAO extends baseDAO implements IWord
 
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT id, word, meaning, creator, votes FROM Words W WHERE W.word = ?";
+        $query = "SELECT id, word, creator FROM Words W WHERE W.word = ?";
 
         $stmt = $conn->prepare($query);
 
@@ -25,11 +25,11 @@ class wordDAO extends baseDAO implements IWord
 
         $stmt->execute();
 
-        $stmt->bind_result($id, $palabra, $significado, $creador, $votos);
+        $stmt->bind_result($id, $palabra, $creador);
 
         if ($stmt->fetch())
         {
-            $word = new wordDTO($id, $palabra, $significado, $creador, $votos);
+            $word = new wordDTO($id, $palabra, $creador);
 
             $stmt->close();
 
@@ -51,24 +51,20 @@ class wordDAO extends baseDAO implements IWord
             $escPalabra = $this->realEscapeString($wordDTO->palabra());
 
             $conn = Aplicacion::getInstance()->getConexionBd();
-            
-            $escSignificado = $this->realEscapeString($wordDTO->significado());
 
             $escCreador = $this->realEscapeString($wordDTO->creador());
 
-            $escVotos = $this->realEscapeString($wordDTO->votos());
-
-            $query = "INSERT INTO Words(word, meaning, creator, votes) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO Words(word, creator) VALUES (?, ?)";
 
             $stmt = $conn->prepare($query);
 
-            $stmt->bind_param("sssi", $escPalabra, $escSignificado, $escCreador, $escVotos);
+            $stmt->bind_param("ss", $escPalabra, $escCreador);
 
             if ($stmt->execute())
             {
                 $idWord = $conn->insert_id;
                 
-                $createdWordDTO = new wordDTO($idWord, $wordDTO->palabra(), $wordDTO->significado(), $wordDTO->creador(), $wordDTO->votos());
+                $createdWordDTO = new wordDTO($idWord, $wordDTO->palabra(), $wordDTO->creador());
 
                 return $createdWordDTO;
             }
@@ -92,14 +88,14 @@ class wordDAO extends baseDAO implements IWord
     $words = [];
     $conn = Aplicacion::getInstance()->getConexionBd();
 
-    $query = "SELECT id, word, meaning, creator, votes FROM Words";
+    $query = "SELECT id, word, creator FROM Words";
 
     $stmt = $conn->prepare($query);
     $stmt->execute();
-    $stmt->bind_result($id, $palabra, $significado, $creador, $votos);
+    $stmt->bind_result($id, $palabra, $creador);
 
     while ($stmt->fetch()) {
-        $word = new wordDTO($id, $palabra, $significado, $creador, $votos);
+        $word = new wordDTO($id, $palabra, $creador);
         $words[] = $word;
     }
 

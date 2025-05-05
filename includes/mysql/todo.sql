@@ -43,12 +43,23 @@ CREATE TABLE IF NOT EXISTS `UserRoles` (
 CREATE TABLE IF NOT EXISTS `Words` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `word` varchar(30) COLLATE utf8mb4_general_ci NOT NULL UNIQUE,
+  `creator` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_words_creator`
+    FOREIGN KEY (`creator`) REFERENCES `Users`(`username`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+CREATE TABLE IF NOT EXISTS `Meanings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `word` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `meaning` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `votes` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  CONSTRAINT `fk_words_creator`
-    FOREIGN KEY (`creator`) REFERENCES `Users`(`username`)
+  CONSTRAINT `fk_word`
+    FOREIGN KEY (`word`) REFERENCES `Words`(`word`)
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

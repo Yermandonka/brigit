@@ -1,6 +1,6 @@
 <?php
-namespace codigo\brigit\includes\usuarios;
-use codigo\brigit\includes\usuarios\userFactory;
+namespace codigo\brigit\includes\users;
+use codigo\brigit\includes\users\userFactory;
 
 class userAppService
 {

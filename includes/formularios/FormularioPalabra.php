@@ -1,10 +1,11 @@
 <?php
 namespace codigo\brigit\includes\formularios;
-use codigo\brigit\includes\palabras\wordAlreadyExistException;
+use codigo\brigit\includes\words\wordAlreadyExistException;
 use codigo\brigit\includes\formularios\Formulario;
-use codigo\brigit\includes\usuarios\userAppService;
-use codigo\brigit\includes\palabras\wordAppService;
-use codigo\brigit\includes\palabras\wordDTO;
+use codigo\brigit\includes\words\wordAppService;
+use codigo\brigit\includes\words\wordDTO;
+use codigo\brigit\includes\meanings\meaningAppService;
+use codigo\brigit\includes\meanings\meaningDTO;
 use codigo\brigit\includes\Aplicacion;
 class FormularioPalabra extends Formulario
 {
@@ -62,13 +63,17 @@ EOF;
         {
             try
             {
-                $userAppService = userAppService::GetSingleton();
 
-                $wordDTO = new wordDTO(0, $palabra, $significado, $_SESSION['nombre'], 0);
+                $wordDTO = new wordDTO(0, $palabra, $_SESSION['nombre']);
+                $significadoDTO = new meaningDTO(0, $palabra, $significado, $_SESSION['nombre'], 0);
 
                 $wordAppService = wordAppService::GetSingleton();
 
+                $meaningAppService = meaningAppService::GetSingleton();
+
                 $createdWordDTO = $wordAppService->create($wordDTO);
+
+                $createdMeaningDTO = $meaningAppService->create($significadoDTO);
 
                 $result = 'index.php';
 
