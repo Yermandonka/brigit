@@ -7,8 +7,6 @@ class RankingTable
     public function __construct()
     {
     }
-
-
     private function mostrarLista()
     {
         $wordAppService = wordAppService::GetSingleton();
@@ -16,28 +14,44 @@ class RankingTable
         $meaningAppService = meaningAppService::GetSingleton();
 
         $filas = "";
+        $contador = 1;
+
         foreach ($words as $w) {
             $meanings = $meaningAppService->getAllMeanings($w->palabra());
             $votes = $meaningAppService->getAllVotes($w->palabra());
-            if (count($meanings) <= 1) {
-                $filas .= "<tr>
-            <td>{$w->palabra()}</td>
-            <td>{$meanings[0]->significado()}</td>
-            <td>{$w->creador()}</td>
-            <td>{$votes}</td>
-        </tr>";
-            } else {
-                $filas .= "<tr>
-            <td>{$w->palabra()}</td>
-            <td>Hay varios significados</td>
-            <td>{$w->creador()}</td>
-            <td>{$votes}</td>
-        </tr>";
-            }
+            $significado = $this->limitarTexto($meanings[0]->significado(), 80);
+
+            $contenidoSignificado = (count($meanings) <= 1)
+                ? $significado
+                : "Hay varios significados";
+
+            $filas .= "<tr>
+        <td>{$contador}</td>
+        <td>{$w->palabra()}</td>
+        <td>{$contenidoSignificado}</td>
+        <td>{$w->creador()}</td>
+        <td>{$votes}</td>
+        <td class='reacciones'>
+                <button type='submit' name='accion' value='like' class='btn-like'>👍</button>
+                <button type='submit' name='accion' value='dislike' class='btn-dislike'>👎</button>
+        </td>
+    </tr>";
+
+            $contador++;
         }
+
         return $filas;
     }
 
+    private function limitarTexto($texto, $limite = 100)
+    {
+        if (strlen($texto) > $limite) {
+            $recortado = substr($texto, 0, $limite) . '...';
+            return "<span class='resumen'>$recortado</span><span class='completo' style='display:none;'>$texto</span> <a href='#' class='ver-mas'>Leer más</a>";
+        } else {
+            return $texto;
+        }
+    }
 
     public function manage()
     {
@@ -48,10 +62,12 @@ class RankingTable
     <table>
         <thead>
             <tr>
+                <th>Posición</th>
                 <th>Palabra</th>
                 <th>Significado</th>
                 <th>Creador</th>
                 <th>Votos</th>
+                <th>Reacciones</th>
             </tr>
         </thead>
         <tbody>
