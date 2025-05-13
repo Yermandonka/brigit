@@ -14,19 +14,17 @@ class voteDAO extends baseDAO implements IVote
         $createdVoteDTO = false;
 
         try {
-            $escPalabra = $this->realEscapeString($voteDTO->word());
-            $escVote = $this->realEscapeString($voteDTO->vote());
-            $escCreator = $this->realEscapeString($voteDTO->creator());
-            $escVotes = $this->realEscapeString($voteDTO->votes());
+            $escVoter = $this->realEscapeString($voteDTO->voter());
+            $escMeaning = $this->realEscapeString($voteDTO->meaning());
+            $escType = $this->realEscapeString($voteDTO->type());
 
             $conn = Aplicacion::getInstance()->getConexionBd();
-            $query = "INSERT INTO votes(word, vote, creator, votes) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO votes(voter, meaning_id, type) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("sssi", $escPalabra, $escVote, $escCreator, $escVotes);
+            $stmt->bind_param("sis", $escVoter, $escMeaning, $escType);
 
             if ($stmt->execute()) {
-                $idVote = $conn->insert_id;
-                $createdVoteDTO = new voteDTO($idVote, $voteDTO->word(), $voteDTO->vote(), $voteDTO->creator(), $voteDTO->votes());
+                $createdVoteDTO = new voteDTO($voteDTO->voter(), $voteDTO->meaning(), $voteDTO->type());
                 return $createdVoteDTO;
             }
         } catch (\mysqli_sql_exception $e) {
@@ -39,69 +37,35 @@ class voteDAO extends baseDAO implements IVote
         return $createdVoteDTO;
     }
 
-    public function getAllVotesForWord($word)
+    public function getUserVote($voter, $meaning_id)
     {
-        $votes = [];
         $conn = Aplicacion::getInstance()->getConexionBd();
-
-        $query = "SELECT id, word, meaning, creator, votes FROM votes WHERE word = ?";
+        $query = "SELECT type FROM votes WHERE voter = ? AND meaning_id = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $word);
+        $stmt->bind_param("si", $voter, $meaning_id);
         $stmt->execute();
-        $stmt->bind_result($id, $palabra, $significado, $creador, $votos);
-
-        while ($stmt->fetch()) {
-            $vote = new voteDTO($id, $palabra, $significado, $creador, $votos);
-            $votes[] = $vote;
+        $stmt->bind_result($type);
+        
+        if ($stmt->fetch()) {
+            $stmt->close();
+            return $type;
         }
-
+        
         $stmt->close();
-        return $votes;
+        return false;
     }
 
-    public function getAllVotes($word)
+    public function updateVoteType($voter, $meaning_id, $type)
     {
-        $votes = 0;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT votes FROM votes WHERE word = ?";
+        $query = "UPDATE votes SET type = ? WHERE voter = ? AND meaning_id = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $word);
-        $stmt->execute();
-        $stmt->bind_result($votos);
-
-        while ($stmt->fetch()) {
-            $votes += $votos;
+        $stmt->bind_param("ssi", $type, $voter, $meaning_id);
+        
+        if ($stmt->execute()) {
+            return true;
         }
-
-        $stmt->close();
-        return $votes;
-    }
-
-    public function addVote($word, $vote)
-    {
-        $conn = Aplicacion::getInstance()->getConexionBd();
-        $escPalabra = $this->realEscapeString($word);
-        $escVote = $this->realEscapeString(htmlentities($vote, ENT_QUOTES, 'UTF-8'));
-
-        $query = "UPDATE votes SET votes = votes + 1 WHERE word = ? AND vote = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("ss", $escPalabra, $escVote);
-        $result = $stmt->execute();
-        $stmt->close();
-        return $result;
-    }
-
-    public function removeVote($word, $vote)
-    {
-        $conn = Aplicacion::getInstance()->getConexionBd();
-        $escPalabra = $this->realEscapeString($word);
-        $escVote = $this->realEscapeString(htmlentities($vote, ENT_QUOTES, 'UTF-8'));
-
-        $query = "UPDATE votes SET votes = votes - 1 WHERE word = ? AND vote = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("ss", $escPalabra, $escVote);
-        $result = $stmt->execute();
-        $stmt->close();
-        return $result;
+        
+        return false;
     }
 }

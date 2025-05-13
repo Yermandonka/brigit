@@ -54,7 +54,11 @@ class meaningAppService
         $IMeaningDAO->addVote($word, $meaning, $add);
     }
 
-
+    public function getMeaningId($word, $meaning)
+    {
+        $meaningDAO = meaningFactory::CreateMeaning();
+        return $meaningDAO->getMeaningId($word, $meaning);
+    }
 }
 
 ?>

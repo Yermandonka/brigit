@@ -18,29 +18,23 @@ class voteAppService
     {
     } 
 
-    public function create($voteDTO)
+    public function create($voter, $meaning_id, $type)
     {
-        $IVoteDAO = voteFactory::CreateVote();
-        $createdVoteDTO = $IVoteDAO->create($voteDTO);
-        return $createdVoteDTO;
+        $voteDTO = new voteDTO($voter, $meaning_id, $type);
+        $voteDAO = voteFactory::CreateVote();
+        return $voteDAO->create($voteDTO);
     }
 
-    public function getAllVotes($word)
+    public function getUserVote($voter, $meaning_id)
     {
-        $IVoteDAO = voteFactory::CreateVote();
-        return $IVoteDAO->getAllVotes($word);
+        $voteDAO = voteFactory::CreateVote();
+        return $voteDAO->getUserVote($voter, $meaning_id);
     }
 
-    public function addVote($word, $vote)
+    public function updateVoteType($voter, $meaning_id, $type)
     {
-        $IVoteDAO = voteFactory::CreateVote();
-        return $IVoteDAO->addVote($word, $vote);
-    }
-
-    public function removeVote($word, $vote)
-    {
-        $IVoteDAO = voteFactory::CreateVote();
-        return $IVoteDAO->removeVote($word, $vote);
+        $voteDAO = voteFactory::CreateVote();
+        return $voteDAO->updateVoteType($voter, $meaning_id, $type);
     }
 }
 ?>

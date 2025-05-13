@@ -4,43 +4,29 @@ namespace codigo\brigit\includes\votes;
 class voteDTO
 {
     private $voter;
-
     private $meaning;
-
     private $type;
 
-    public function __construct($id, $palabra, $significado, $creador, $votos)
+    public function __construct($voter, $meaning, $type)
     {
-        $this->id = $id;
-        $this->palabra = $palabra;
-        $this->significado = $significado;
-        $this->creador = $creador;
-        $this->votos = $votos;
+        $this->voter = $voter;
+        $this->meaning = $meaning;
+        $this->type = $type;
     }
 
-    public function id()
+    public function voter()
     {
-        return $this->id;
+        return $this->voter;
     }
 
-    public function palabra()
+    public function meaning()
     {
-        return $this->palabra;
+        return $this->meaning;
     }
 
-    public function significado()
+    public function type()
     {
-        return $this->significado;
-    }
-
-    public function creador()
-    {
-        return $this->creador;
-    }
-
-    public function votos()
-    {
-        return $this->votos;
+        return $this->type;
     }
 }
 ?>

@@ -31,33 +31,42 @@ function ocultarFichaContainer() {
 }
 
 function votar(palabra, significado, tipo, boton) {
-    // Debug logs
-    console.log('Iniciando voto:', { palabra, significado, tipo });
-    
     // Evitar que el click se propague al tr
     event.stopPropagation();
-    console.log('Click propagation detenida');
     
     // Hacer la petición AJAX
     const url = `votar.php?palabra=${palabra}&significado=${significado}&tipo=${tipo}`;
-    console.log('Haciendo petición a:', url);
 
     fetch(url)
-        .then(response => {
-            console.log('Respuesta recibida:', response);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            console.log('Datos recibidos:', data);
             if (data.success) {
                 // Actualizar el contador de votos en la tabla
                 const fila = boton.closest('tr');
                 const celdaVotos = fila.querySelector('td:nth-child(5)');
-                const votosAnteriores = celdaVotos.textContent;
                 celdaVotos.textContent = data.votes;
-                console.log('Votos actualizados:', { anteriores: votosAnteriores, nuevos: data.votes });
-            } else {
-                console.error('Error en la respuesta:', data);
+
+                // Obtener ambos botones de la fila
+                const botonLike = fila.querySelector('.btn-like');
+                const botonDislike = fila.querySelector('.btn-dislike');
+
+                // Luego, según el voto actual, deshabilitamos el correspondiente
+                if (data.lastVote === "like") {
+                    botonLike.style.cursor = 'not-allowed';
+                    botonLike.disabled = true;
+                    botonLike.style.opacity = '0.5';
+                    botonDislike.style.cursor = 'pointer';
+                    botonDislike.disabled = false;
+                    botonDislike.style.opacity = '1';
+                } else if (data.lastVote === "dislike") {
+                    botonLike.style.cursor = 'pointer';
+                    botonLike.disabled = false;
+                    botonLike.style.opacity = '1';
+                    botonDislike.style.cursor = 'not-allowed';
+                    botonDislike.disabled = true;
+                    botonDislike.style.opacity = '0.5';
+                }
+                // Si currentVote es null, significa que se quitó el voto
             }
         })
         .catch(error => {

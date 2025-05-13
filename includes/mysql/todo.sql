@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `Votes` (
   `voter` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `meaning_id` int(11) NOT NULL,
   `type` enum('like', 'dislike') COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`voter`, `word`, `meaning_id`),
+  PRIMARY KEY (`voter`, `meaning_id`),
   CONSTRAINT `fk_votes_voter`
     FOREIGN KEY (`voter`) REFERENCES `Users`(`username`)
     ON DELETE CASCADE ON UPDATE CASCADE,

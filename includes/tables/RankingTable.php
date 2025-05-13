@@ -2,6 +2,8 @@
 namespace codigo\brigit\includes\tables;
 use codigo\brigit\includes\words\wordAppService;
 use codigo\brigit\includes\meanings\meaningAppService;
+use codigo\brigit\includes\votes\voteAppService;
+
 class RankingTable
 {
     public function __construct()
@@ -23,19 +25,33 @@ class RankingTable
         $contador = 1;
 
         $usuarioLogueado = isset($_SESSION["login"]) && ($_SESSION["login"] === true);
+        $voter = $_SESSION['nombre'] ?? '';
 
         foreach ($words as $w) {
             $meanings = $meaningAppService->getAllMeanings($w->palabra());
             $votes = $meaningAppService->getAllVotes($w->palabra());
             $significado = $this->limitarTexto($meanings[0]->significado(), 80);
+            
+            // Obtener el voto actual del usuario para este significado
+            $voteAppService = voteAppService::GetSingleton();
+            $meaningId = $meaningAppService->getMeaningId($w->palabra(), $significado);
+            $votoActual = $usuarioLogueado ? $voteAppService->getUserVote($voter, $meaningId) : false;
 
             $hayVariosSignificados = count($meanings) > 1;
             $contenidoSignificado = $hayVariosSignificados ? "Hay varios significados" : $significado;
             
-            $estiloBoton = ($hayVariosSignificados || !$usuarioLogueado) ? "style='opacity:0.5; cursor:not-allowed;' disabled" : "";
+            // Modificar el estilo de los botones según el voto actual
+            $estiloBotonLike = ($hayVariosSignificados || !$usuarioLogueado || $votoActual === 'like') 
+                ? "style='opacity:0.5; cursor:not-allowed;' disabled" : "";
+            $estiloBotonDislike = ($hayVariosSignificados || !$usuarioLogueado || $votoActual === 'dislike') 
+                ? "style='opacity:0.5; cursor:not-allowed;' disabled" : "";
+            
             $tooltipTitle = !$usuarioLogueado ? "title='Debes iniciar sesión para votar'" : "";
-            $onClickLike = ($hayVariosSignificados || !$usuarioLogueado) ? "" : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"like\", this)'";
-            $onClickDislike = ($hayVariosSignificados || !$usuarioLogueado) ? "" : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"dislike\", this)'";
+            
+            $onClickLike = ($hayVariosSignificados || !$usuarioLogueado) ? "" 
+                : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"like\", this)'";
+            $onClickDislike = ($hayVariosSignificados || !$usuarioLogueado) ? "" 
+                : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"dislike\", this)'";
             
             $filas .= "<tr class='filaRankingTable' id='{$w->palabra()}' onclick='mostrarFicha(\"{$w->palabra()}\", \"{$significado}\", \"{$w->creador()}\")' style='cursor: pointer;'>
         <td>{$contador}</td>
@@ -44,8 +60,8 @@ class RankingTable
         <td>{$w->creador()}</td>
         <td>{$votes}</td>
         <td class='reacciones'>
-                <button type='button' name='accion' value='like' class='btn-like' {$estiloBoton} {$tooltipTitle} {$onClickLike}>👍</button>
-                <button type='button' name='accion' value='dislike' class='btn-dislike' {$estiloBoton} {$tooltipTitle} {$onClickDislike}>👎</button>
+            <button type='button' name='accion' value='like' class='btn-like' {$estiloBotonLike} {$tooltipTitle} {$onClickLike}>👍</button>
+            <button type='button' name='accion' value='dislike' class='btn-dislike' {$estiloBotonDislike} {$tooltipTitle} {$onClickDislike}>👎</button>
         </td>
     </tr>";
 

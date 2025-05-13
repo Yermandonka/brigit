@@ -168,5 +168,27 @@ class meaningDAO extends baseDAO implements IMeaning
         $stmt->close();
     }
 
+    public function getMeaningId($word, $meaning)
+    {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $escPalabra = $this->realEscapeString($word);
+        $escSignificado = $this->realEscapeString($meaning);
+
+        $query = "SELECT id FROM meanings WHERE word = ? AND meaning = ?";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->bind_param("ss", $escPalabra, $escSignificado);
+        $stmt->execute();
+        $stmt->bind_result($id);
+
+        if ($stmt->fetch()) {
+            return $id;
+        }
+
+        return false;
+    }
+
 }
 ?>
