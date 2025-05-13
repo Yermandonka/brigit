@@ -23,7 +23,7 @@ $contenidoPrincipal = <<<EOS
 <a href="ranking.php" style="background-image: url('$RUTA_APP/images/cocktails.png');">Ranking</a>
 </div>
 <div class="funcionalidad col-xs-12 col-md-6" id="buscador">
-<a href="buscador.php" style="background-image: url('$RUTA_APP/images/maninavest.png');">Buscador</a>
+<a href="search.php" style="background-image: url('$RUTA_APP/images/maninavest.png');">Buscador</a>
 </div>
 <div class="funcionalidad col-xs-12 col-md-6" id="myArea">
 <a href="myArea.php" style="background-image: url('$RUTA_APP/images/thefightingtemeraire.png');">MyArea</a>

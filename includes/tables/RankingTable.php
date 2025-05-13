@@ -7,12 +7,17 @@ class RankingTable
     public function __construct()
     {
     }
-    private function mostrarLista()
+    private function mostrarLista($word = null)
     {
-        $wordAppService = wordAppService::GetSingleton();
-        $words = $wordAppService->getAllWords();
-        $meaningAppService = meaningAppService::GetSingleton();
 
+        $wordAppService = wordAppService::GetSingleton();
+        if ($word == null) {
+            $words = $wordAppService->getAllWords();
+            $meaningAppService = meaningAppService::GetSingleton();
+        } else {
+            $words = $wordAppService->getTheseWords($word);
+            $meaningAppService = meaningAppService::GetSingleton();
+        }
         $filas = "";
         $contador = 1;
 
@@ -25,7 +30,7 @@ class RankingTable
                 ? $significado
                 : "Hay varios significados";
 
-            $filas .= "<tr>
+            $filas .= "<tr class='filaRankingTable' id='{$w->palabra()}'>
         <td>{$contador}</td>
         <td>{$w->palabra()}</td>
         <td>{$contenidoSignificado}</td>
@@ -58,7 +63,6 @@ class RankingTable
 
         $html = <<<EOF
 <div id="rankingTable">
-    <h1>Lista de Palabras</h1>
     <table>
         <thead>
             <tr>
@@ -82,5 +86,37 @@ EOF;
         return $html;
     }
 
+    public function search($palabra)
+    {
+        $html = <<<EOF
+<div class="row resultSearch">
+<div class="col">
+<div id="rankingTable">
+    <table>
+        <thead>
+            <tr>
+                <th>Posición</th>
+                <th>Palabra</th>
+                <th>Significado</th>
+                <th>Creador</th>
+                <th>Votos</th>
+                <th>Reacciones</th>
+            </tr>
+        </thead>
+        <tbody>
+EOF;
+        $html .= $this->mostrarLista($palabra); // Pasar $words al método mostrarLista
+        $html .= <<<EOF
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+EOF;
+
+        return $html;
+    }
 
 }
+
+

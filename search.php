@@ -1,24 +1,29 @@
 <?php
-use codigo\brigit\includes\words\wordAppService;
+use codigo\brigit\includes\tables\RankingTable;
 require_once __DIR__.'/includes/config.php';
 
-$wordAppService = wordAppService::GetSingleton();
+$table = new RankingTable();
 
-$words = $wordAppService->getAllWords();
+$htmlTable = $table->search($_GET['palabra'] ?? null);
+
+$contenidoPrincipal = <<<EOS
+EOS;
+
 
 $tituloPagina = 'Search Page';
 
 $contenidoPrincipal = <<<EOS
-<h1>Lista de Palabras</h1>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Palabra</th>
-            <th>Significado</th>
-            <th>Creador ID</th>
-            <th>Votos</th>
-        </tr>
-    </table>
+<div class="row search">
+<div class="col">
+<form class="form-inline my-2 my-lg-0">
+<input class="form-control mr-sm-2" type="search" placeholder="Buscar palabra">
+<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+</form>
+</div>
+</div>
+
+$htmlTable
+
 EOS;
 
 require __DIR__.'/includes/vistas/plantillas/plantilla.php';

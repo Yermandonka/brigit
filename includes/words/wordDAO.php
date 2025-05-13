@@ -27,8 +27,7 @@ class wordDAO extends baseDAO implements IWord
 
         $stmt->bind_result($id, $palabra, $creador);
 
-        if ($stmt->fetch())
-        {
+        if ($stmt->fetch()) {
             $word = new wordDTO($id, $palabra, $creador);
 
             $stmt->close();
@@ -43,8 +42,7 @@ class wordDAO extends baseDAO implements IWord
     {
         $createdWordDTO = false;
 
-        try
-        {
+        try {
             if ($this->buscaPalabra($wordDTO->palabra())) {
                 throw new wordAlreadyExistException("Ya existe la palabra '{$wordDTO->palabra()}'");
             }
@@ -60,20 +58,16 @@ class wordDAO extends baseDAO implements IWord
 
             $stmt->bind_param("ss", $escPalabra, $escCreador);
 
-            if ($stmt->execute())
-            {
+            if ($stmt->execute()) {
                 $idWord = $conn->insert_id;
-                
+
                 $createdWordDTO = new wordDTO($idWord, $wordDTO->palabra(), $wordDTO->creador());
 
                 return $createdWordDTO;
             }
-        }
-        catch(\mysqli_sql_exception $e)
-        {
+        } catch (\mysqli_sql_exception $e) {
 
-            if ($conn->sqlstate == 23000) 
-            { 
+            if ($conn->sqlstate == 23000) {
                 throw new wordAlreadyExistException("Ya existe la palabra '{$wordDTO->palabra()}'");
             }
 
@@ -84,24 +78,49 @@ class wordDAO extends baseDAO implements IWord
     }
 
     public function getAllWords()
-{
-    $words = [];
-    $conn = Aplicacion::getInstance()->getConexionBd();
+    {
+        $words = [];
+        $conn = Aplicacion::getInstance()->getConexionBd();
 
-    $query = "SELECT id, word, creator FROM Words";
+        $query = "SELECT id, word, creator FROM Words";
 
-    $stmt = $conn->prepare($query);
-    $stmt->execute();
-    $stmt->bind_result($id, $palabra, $creador);
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($id, $palabra, $creador);
 
-    while ($stmt->fetch()) {
-        $word = new wordDTO($id, $palabra, $creador);
-        $words[] = $word;
+        while ($stmt->fetch()) {
+            $word = new wordDTO($id, $palabra, $creador);
+            $words[] = $word;
+        }
+
+        $stmt->close();
+        return $words;
     }
 
-    $stmt->close();
-    return $words;
-}
+    public function getTheseWords($word)
+    {
+        $words = [];
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $query = "SELECT id, word, creator FROM Words WHERE word LIKE ?";
+
+        $stmt = $conn->prepare($query);
+
+        // Escapar el parámetro y agregar comodines para búsqueda parcial
+        $searchWord = '%' . $this->realEscapeString($word) . '%';
+        $stmt->bind_param("s", $searchWord);
+
+        $stmt->execute();
+        $stmt->bind_result($id, $palabra, $creador);
+
+        while ($stmt->fetch()) {
+            $word = new wordDTO($id, $palabra, $creador);
+            $words[] = $word;
+        }
+
+        $stmt->close();
+        return $words;
+    }
 
 }
 ?>
