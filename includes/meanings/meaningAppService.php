@@ -47,19 +47,13 @@ class meaningAppService
         return $meanings;
     }
 
-    public function addVote($word, $meaning)
+    public function addVote($word, $meaning, $add)
     {
         $IMeaningDAO = meaningFactory::CreateMeaning();
 
-        $IMeaningDAO->addVote($word, $meaning);
+        $IMeaningDAO->addVote($word, $meaning, $add);
     }
 
-    public function removeVote($word, $meaning)
-    {
-        $IMeaningDAO = meaningFactory::CreateMeaning();
-
-        $IMeaningDAO->removeVote($word, $meaning);
-    }
 
 }
 

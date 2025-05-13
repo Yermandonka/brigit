@@ -50,16 +50,28 @@ CREATE TABLE IF NOT EXISTS `Words` (
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
 CREATE TABLE IF NOT EXISTS `Meanings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `word` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `meaning` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
+  `word` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `creator` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `votes` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_word`
     FOREIGN KEY (`word`) REFERENCES `Words`(`word`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `Votes` (
+  `voter` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `meaning_id` int(11) NOT NULL,
+  `type` enum('like', 'dislike') COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`voter`, `word`, `meaning_id`),
+  CONSTRAINT `fk_votes_voter`
+    FOREIGN KEY (`voter`) REFERENCES `Users`(`username`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_votes_meaning`
+    FOREIGN KEY (`meaning_id`) REFERENCES `Meanings`(`id`)
     ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

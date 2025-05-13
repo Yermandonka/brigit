@@ -80,11 +80,11 @@ class meaningDAO extends baseDAO implements IMeaning
 
             $escVotos = $this->realEscapeString($meaningDTO->votos());
 
-            $query = "INSERT INTO meanings(word, meaning, creator, votes) VALUES (?, ?, ?, ?)";
+            $query = "INSERT INTO meanings(meaning, word, creator, votes) VALUES (?, ?, ?, ?)";
 
             $stmt = $conn->prepare($query);
 
-            $stmt->bind_param("sssi", $escPalabra, $escSignificado, $escCreador, $escVotos);
+            $stmt->bind_param("sssi", $escSignificado, $escPalabra, $escCreador, $escVotos);
 
             if ($stmt->execute()) {
                 $idMeaning = $conn->insert_id;
@@ -110,13 +110,13 @@ class meaningDAO extends baseDAO implements IMeaning
         $meanings = [];
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT id, word, meaning, creator, votes FROM meanings WHERE word = ?";
+        $query = "SELECT id, meaning, word, creator, votes FROM meanings WHERE word = ?";
 
         $stmt = $conn->prepare($query);
 
         $stmt->bind_param("s", $word);
         $stmt->execute();
-        $stmt->bind_result($id, $palabra, $significado, $creador, $votos);
+        $stmt->bind_result($id, $significado, $palabra, $creador, $votos);
 
         while ($stmt->fetch()) {
             $meaning = new meaningDTO($id, $palabra, $significado, $creador, $votos);
@@ -148,7 +148,7 @@ class meaningDAO extends baseDAO implements IMeaning
         return $votes;
     }
 
-    public function addVote($word, $meaning)
+    public function addVote($word, $meaning, $add)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
 
@@ -156,25 +156,14 @@ class meaningDAO extends baseDAO implements IMeaning
 
         $conn = Aplicacion::getInstance()->getConexionBd();
         $escSignificado = $this->realEscapeString(htmlentities($meaning, ENT_QUOTES, 'UTF-8'));
-
-        $query = "UPDATE meanings SET votes = votes + 1 WHERE word = ? AND meaning = ?";
-
+        if ($add) {
+            $query = "UPDATE meanings SET votes = votes + 1 WHERE word = ? AND meaning = ?";
+        } else {
+            $query = "UPDATE meanings SET votes = votes - 1 WHERE word = ? AND meaning = ?";
+        }
         $stmt = $conn->prepare($query);
 
         $stmt->bind_param("ss", $escPalabra, $escSignificado);
-        $stmt->execute();
-        $stmt->close();
-    }
-
-    public function removeVote($word, $meaning)
-    {
-        $conn = Aplicacion::getInstance()->getConexionBd();
-
-        $query = "UPDATE meanings SET votes = votes - 1 WHERE word = ? AND meaning = ?";
-
-        $stmt = $conn->prepare($query);
-
-        $stmt->bind_param("ss", $word, $meaning);
         $stmt->execute();
         $stmt->close();
     }

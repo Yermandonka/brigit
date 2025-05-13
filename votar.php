@@ -14,9 +14,9 @@ if ($palabra && $significado && $tipo) {
     
     try {
         if ($tipo === 'like') {
-            $meaningAppService->addVote($palabra, $significado);
+            $meaningAppService->addVote($palabra, $significado, true);
         } else if ($tipo === 'dislike') {
-            $meaningAppService->removeVote($palabra, $significado);
+            $meaningAppService->addVote($palabra, $significado, false);
         }
         
         // Obtener el nuevo conteo de votos
