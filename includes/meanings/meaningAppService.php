@@ -47,6 +47,20 @@ class meaningAppService
         return $meanings;
     }
 
+    public function addVote($word, $meaning)
+    {
+        $IMeaningDAO = meaningFactory::CreateMeaning();
+
+        $IMeaningDAO->addVote($word, $meaning);
+    }
+
+    public function removeVote($word, $meaning)
+    {
+        $IMeaningDAO = meaningFactory::CreateMeaning();
+
+        $IMeaningDAO->removeVote($word, $meaning);
+    }
+
 }
 
 ?>

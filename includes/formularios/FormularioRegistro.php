@@ -24,7 +24,7 @@ class FormularioRegistro extends Formulario
         $html = <<<EOF
         <fieldset>
             <legend>Registrarse</legend>
-            <p><label>Nombre:</label> <input type="text" name="nombreUsuario" value="$nombreUsuario"/></p>
+            <p><label>Nombre:</label> <input type="text" name="nombreUsuario" value="$nombreUsuario" autofocus required></p>
             <p><label>Password:</label> <input type="password" name="password" /></p>
             <p><label>Re-Password:</label> <input type="password" name="rePassword" /></p>
             <div class="buttonform"><button type="submit" name="login">Entrar</button></div>

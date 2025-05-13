@@ -28,7 +28,7 @@ class FormularioLogin extends Formulario
         $html = <<<EOF
         <fieldset>
             <legend>Login</legend>
-            <p><label>Nombre:</label> <input type="text" name="nombreUsuario" value="$nombreUsuario"/></p>
+            <p><label>Nombre:</label> <input type="text" name="nombreUsuario" value="$nombreUsuario" autofocus required> </p>
             <p><label>Password:</label> <input type="password" name="password" /></p>
             <div class="buttonform"><button id="login" type="submit" name="login">Entrar</button></div>
         </fieldset>

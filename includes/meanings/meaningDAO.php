@@ -28,12 +28,11 @@ class meaningDAO extends baseDAO implements IMeaning
 
         $stmt->bind_result($significados);
 
-        if ($stmt->fetch())
-        {
+        if ($stmt->fetch()) {
 
-                $stmt->close();
+            $stmt->close();
 
-                return in_array($escSignificado, $significados);
+            return in_array($escSignificado, $significados);
         }
         $stmt->close();
         return false;
@@ -57,10 +56,9 @@ class meaningDAO extends baseDAO implements IMeaning
 
         $stmt->bind_result($significados);
 
-        if ($stmt->fetch())
-        {
-                $stmt->close();
-                return count($significados);
+        if ($stmt->fetch()) {
+            $stmt->close();
+            return count($significados);
         }
         $stmt->close();
         return false;
@@ -71,12 +69,11 @@ class meaningDAO extends baseDAO implements IMeaning
     {
         $createdMeaningDTO = false;
 
-        try
-        {
+        try {
             $escPalabra = $this->realEscapeString($meaningDTO->palabra());
 
             $conn = Aplicacion::getInstance()->getConexionBd();
-            
+
             $escSignificado = $this->realEscapeString($meaningDTO->significado());
 
             $escCreador = $this->realEscapeString($meaningDTO->creador());
@@ -89,20 +86,16 @@ class meaningDAO extends baseDAO implements IMeaning
 
             $stmt->bind_param("sssi", $escPalabra, $escSignificado, $escCreador, $escVotos);
 
-            if ($stmt->execute())
-            {
+            if ($stmt->execute()) {
                 $idMeaning = $conn->insert_id;
-                
+
                 $createdMeaningDTO = new meaningDTO($idMeaning, $meaningDTO->palabra(), $meaningDTO->significado(), $meaningDTO->creador(), $meaningDTO->votos());
 
                 return $createdMeaningDTO;
             }
-        }
-        catch(\mysqli_sql_exception $e)
-        {
+        } catch (\mysqli_sql_exception $e) {
 
-            if ($conn->sqlstate == 23000) 
-            { 
+            if ($conn->sqlstate == 23000) {
                 throw new meaningAlreadyExistException("Ya existe el significado");
             }
 
@@ -120,7 +113,7 @@ class meaningDAO extends baseDAO implements IMeaning
         $query = "SELECT id, word, meaning, creator, votes FROM meanings WHERE word = ?";
 
         $stmt = $conn->prepare($query);
-        
+
         $stmt->bind_param("s", $word);
         $stmt->execute();
         $stmt->bind_result($id, $palabra, $significado, $creador, $votos);
@@ -129,7 +122,7 @@ class meaningDAO extends baseDAO implements IMeaning
             $meaning = new meaningDTO($id, $palabra, $significado, $creador, $votos);
             $meanings[] = $meaning;
         }
-    
+
         $stmt->close();
         return $meanings;
     }
@@ -142,7 +135,7 @@ class meaningDAO extends baseDAO implements IMeaning
         $query = "SELECT votes FROM meanings WHERE word = ?";
 
         $stmt = $conn->prepare($query);
-        
+
         $stmt->bind_param("s", $word);
         $stmt->execute();
         $stmt->bind_result($votos);
@@ -150,9 +143,40 @@ class meaningDAO extends baseDAO implements IMeaning
         while ($stmt->fetch()) {
             $votes += $votos;
         }
-    
+
         $stmt->close();
         return $votes;
+    }
+
+    public function addVote($word, $meaning)
+    {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $escPalabra = $this->realEscapeString($word);
+
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $escSignificado = $this->realEscapeString(htmlentities($meaning, ENT_QUOTES, 'UTF-8'));
+
+        $query = "UPDATE meanings SET votes = votes + 1 WHERE word = ? AND meaning = ?";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->bind_param("ss", $escPalabra, $escSignificado);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    public function removeVote($word, $meaning)
+    {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $query = "UPDATE meanings SET votes = votes - 1 WHERE word = ? AND meaning = ?";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->bind_param("ss", $word, $meaning);
+        $stmt->execute();
+        $stmt->close();
     }
 
 }

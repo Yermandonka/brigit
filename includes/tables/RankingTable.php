@@ -9,11 +9,12 @@ class RankingTable
     }
     private function mostrarLista($word = null)
     {
-
         $wordAppService = wordAppService::GetSingleton();
         if ($word == null) {
             $words = $wordAppService->getAllWords();
             $meaningAppService = meaningAppService::GetSingleton();
+        } else if ($word == "null") {
+            $words = [];
         } else {
             $words = $wordAppService->getTheseWords($word);
             $meaningAppService = meaningAppService::GetSingleton();
@@ -26,19 +27,22 @@ class RankingTable
             $votes = $meaningAppService->getAllVotes($w->palabra());
             $significado = $this->limitarTexto($meanings[0]->significado(), 80);
 
-            $contenidoSignificado = (count($meanings) <= 1)
-                ? $significado
-                : "Hay varios significados";
-
-            $filas .= "<tr class='filaRankingTable' id='{$w->palabra()}'>
+            $hayVariosSignificados = count($meanings) > 1;
+            $contenidoSignificado = $hayVariosSignificados ? "Hay varios significados" : $significado;
+            
+            $estiloBoton = $hayVariosSignificados ? "style='opacity:0.5; cursor:not-allowed;' disabled" : "";
+            $onClickLike = $hayVariosSignificados ? "" : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"like\", this)'";
+            $onClickDislike = $hayVariosSignificados ? "" : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"dislike\", this)'";
+            
+            $filas .= "<tr class='filaRankingTable' id='{$w->palabra()}' onclick='mostrarFicha(\"{$w->palabra()}\", \"{$significado}\", \"{$w->creador()}\")' style='cursor: pointer;'>
         <td>{$contador}</td>
         <td>{$w->palabra()}</td>
         <td>{$contenidoSignificado}</td>
         <td>{$w->creador()}</td>
         <td>{$votes}</td>
         <td class='reacciones'>
-                <button type='submit' name='accion' value='like' class='btn-like'>👍</button>
-                <button type='submit' name='accion' value='dislike' class='btn-dislike'>👎</button>
+                <button type='button' name='accion' value='like' class='btn-like' {$estiloBoton} {$onClickLike}>👍</button>
+                <button type='button' name='accion' value='dislike' class='btn-dislike' {$estiloBoton} {$onClickDislike}>👎</button>
         </td>
     </tr>";
 
@@ -89,6 +93,13 @@ EOF;
     public function search($palabra)
     {
         $html = <<<EOF
+<div id="fichaContainer" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); 
+    background:white; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1000; max-width:80%;">
+    <button onclick="ocultarFichaContainer()" 
+        style="position:absolute; right:10px; top:10px; border:none; background:none; cursor:pointer;">✕</button>
+    <div id="fichaContent"></div>
+</div>
+
 <div class="row resultSearch">
 <div class="col">
 <div id="rankingTable">
@@ -105,7 +116,7 @@ EOF;
         </thead>
         <tbody>
 EOF;
-        $html .= $this->mostrarLista($palabra); // Pasar $words al método mostrarLista
+        $html .= $this->mostrarLista($palabra);
         $html .= <<<EOF
         </tbody>
     </table>

@@ -19,7 +19,7 @@ class FormularioPalabra extends Formulario
         $html = <<<EOF
         <fieldset>
             <legend>Crea una palabra</legend>
-            <p><label>Palabra:</label> <input type="text" name="palabra"/></p>
+            <p><label>Palabra:</label> <input type="text" name="palabra" autofocus required></p>
             <p><label>Significado:</label> <textarea type="text" name="significado" placeholder="Máximo 500 carácteres"/></textarea></p>
             <div class="buttonform"><button type="submit" name="crearPalabra">Crear</button></div>
         </fieldset>
