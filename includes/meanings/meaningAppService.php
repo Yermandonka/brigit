@@ -38,7 +38,7 @@ class meaningAppService
         return $meaningDTO;
     }
 
-    public function getAllMeanings($word, $user)
+    public function getAllMeanings($word = null, $user = null)
     {
         $IMeaningDAO = meaningFactory::CreateMeaning();
 
