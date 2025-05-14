@@ -24,20 +24,21 @@ if ($palabra && $significado && $tipo && $voter) {
 
     try {
         $meaningId = $meaningAppService->getMeaningId($palabra, $significado);
+        $lastVoto = $voteAppService->getUserVote($voter, $meaningId);
         if ($tipo === 'like') {
-            if ($voteAppService->getUserVote($voter, $meaningId) === false) {
+            if ($lastVoto === false) {
                 $meaningAppService->addVote($palabra, $significado, true);
                 $voteAppService->create($voter, $meaningId, 'like');
-            } else if ($voteAppService->getUserVote($voter, $meaningId) === 'dislike') {
+            } else if ($lastVoto === 'dislike') {
                 $meaningAppService->addVote($palabra, $significado, true);
                 $meaningAppService->addVote($palabra, $significado, true);
                 $voteAppService->updateVoteType($voter, $meaningId, 'like');
             }
         } else if ($tipo === 'dislike') {
-            if ($voteAppService->getUserVote($voter, $meaningId) === false) {
+            if ($lastVoto === false) {
                 $meaningAppService->addVote($palabra, $significado, false);
                 $voteAppService->create($voter, $meaningId, 'dislike');
-            } else if ($voteAppService->getUserVote($voter, $meaningId) === 'like') {
+            } else if ($lastVoto === 'like') {
                 $meaningAppService->addVote($palabra, $significado, false);
                 $meaningAppService->addVote($palabra, $significado, false);
                 $voteAppService->updateVoteType($voter, $meaningId, 'dislike');
@@ -46,7 +47,6 @@ if ($palabra && $significado && $tipo && $voter) {
 
         // Obtener el nuevo conteo de votos
         $votes = $meaningAppService->getAllVotes($palabra);
-        $lastVoto = $voteAppService->getUserVote($voter, $meaningId);
         
         $response = [
             'success' => true,

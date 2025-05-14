@@ -75,7 +75,7 @@ class meaningDAO extends baseDAO implements IMeaning
 
             $conn = Aplicacion::getInstance()->getConexionBd();
 
-            $escSignificado = $this->realEscapeString($meaningDTO->significado());
+            $escSignificado = $this->realEscapeString(htmlentities($meaningDTO->significado(), ENT_QUOTES, 'UTF-8'));
 
             $escCreador = $this->realEscapeString($meaningDTO->creador());
 

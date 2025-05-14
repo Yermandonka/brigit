@@ -20,9 +20,7 @@ class WordTable
         $voter = $_SESSION['nombre'] ?? '';
 
         foreach ($meanings as $m) {
-            $meanings = $meaningAppService->getAllMeanings($m->palabra());
-            $votes = $meaningAppService->getAllVotes($m->palabra());
-            $significado = $this->limitarTexto($meanings[0]->significado(), 80);
+            $significado = $this->limitarTexto($m->significado(), 80);
 
             // Obtener el voto actual del usuario para este significado
             $voteAppService = voteAppService::GetSingleton();
@@ -38,15 +36,15 @@ class WordTable
             $tooltipTitle = !$usuarioLogueado ? "title='Debes iniciar sesión para votar'" : "";
 
             $onClickLike = (!$usuarioLogueado) ? ""
-                : "onclick='votar(\"{$m->palabra()}\", \"{$significado}\", \"like\", this)'";
+                : "onclick='votar2(\"{$m->palabra()}\", \"{$m->significado()}\", \"like\", this, 'wordTable')'";
             $onClickDislike = (!$usuarioLogueado) ? ""
-                : "onclick='votar(\"{$m->palabra()}\", \"{$significado}\", \"dislike\", this)'";
+                : "onclick='votar2(\"{$m->palabra()}\", \"{$m->significado()}\", \"dislike\", this, 'wordTable')'";
 
-            $filas .= "<tr class='filaRankingTable' id='{$m->palabra()}' onclick='mostrarFicha(\"{$m->palabra()}\", \"{$significado}\", \"{$m->creador()}\")' style='cursor: pointer;'>
+            $filas .= "<tr class='filaRankingTable' id='{$m->significado()}''>
         <td>{$contador}</td>
         <td>{$m->significado()}</td>
         <td>{$m->creador()}</td>
-        <td>{$m->votos()}</td>
+        <td class='votosField'>{$m->votos()}</td>
         <td class='reacciones'>
             <button type='button' name='accion' value='like' class='btn-like' {$estiloBotonLike} {$tooltipTitle} {$onClickLike}>👍</button>
             <button type='button' name='accion' value='dislike' class='btn-dislike' {$estiloBotonDislike} {$tooltipTitle} {$onClickDislike}>👎</button>

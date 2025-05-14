@@ -75,6 +75,64 @@ function votar(palabra, significado, tipo, boton) {
                     const botonLike = fila.querySelector('.btn-like');
                     const botonDislike = fila.querySelector('.btn-dislike');
 
+                    if (tipo === 'like') {
+                        botonLike.style.cursor = 'not-allowed';
+                        botonLike.disabled = true;
+                        botonLike.style.opacity = '0.5';
+                        if(data.lastVote === 'dislike') {
+                            botonDislike.style.cursor = 'pointer';
+                            botonDislike.disabled = false;
+                            botonDislike.style.opacity = '1';
+                        }
+                    } else {
+                        botonDislike.style.cursor = 'not-allowed';
+                        botonDislike.disabled = true;
+                        botonDislike.style.opacity = '0.5';
+                        if(data.lastVote === 'like') {
+                            botonLike.style.cursor = 'pointer';
+                            botonLike.disabled = false;
+                            botonLike.style.opacity = '1';
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('Error al parsear JSON:', e);
+                console.error('Texto recibido:', text);
+            }
+        })
+        .catch(error => {
+            console.error('Error en la petición:', error);
+        });
+}
+
+function votar2(palabra, significado, tipo, boton) {
+    // Evitar que el click se propague al tr
+    event.stopPropagation();
+
+    // Hacer la petición AJAX
+    const url = `votar.php?palabra=${palabra}&significado=${significado}&tipo=${tipo}`;
+
+    fetch(url)
+        .then(response => response.text())
+        .then(text => {
+            console.log('Respuesta del servidor:', text);
+            // Intentar parsear el texto como JSON
+            try {
+                const data = JSON.parse(text);
+                if (data.success) {
+                    // Actualizar el contador de votos en la tabla
+                    const fila = boton.closest('tr');
+                    const celdaVotos = fila.querySelector('td:nth-child(4)');
+                    celdaVotos.textContent = data.votes;
+
+                    // Debug del tipo recibido
+                    console.log('Tipo:', tipo);
+                    console.log('LastVote:', data.lastVote);
+
+                    // Obtener ambos botones de la fila
+                    const botonLike = fila.querySelector('.btn-like');
+                    const botonDislike = fila.querySelector('.btn-dislike');
+
                     // Primero reseteamos ambos botones
                     botonLike.style.cursor = 'pointer';
                     botonLike.disabled = false;
@@ -117,7 +175,7 @@ function ocultarSignificadoFormContainer() {
 
 function mostrarFicha2() {
     const fichaContent = document.getElementById('significadoForm');
-    
+
     fichaContent.innerHTML = `
         <form id="formNuevoSignificado">
             <div class="form-group">
@@ -131,10 +189,10 @@ function mostrarFicha2() {
         </form>
     `;
 
-   mostrarSignificadoFormContainer();
+    mostrarSignificadoFormContainer();
 
     // Agregar el event listener para el formulario
-    document.getElementById('formNuevoSignificado').addEventListener('submit', function(e) {
+    document.getElementById('formNuevoSignificado').addEventListener('submit', function (e) {
         e.preventDefault();
         guardarNuevoSignificado(document.querySelector('.ficha-title').textContent.split(' ').pop());
     });
@@ -142,7 +200,7 @@ function mostrarFicha2() {
 
 function guardarNuevoSignificado(palabra) {
     const significado = document.getElementById('nuevoSignificado').value;
-    
+
     if (!significado.trim()) {
         alert('Por favor, introduce un significado');
         return;
@@ -155,18 +213,18 @@ function guardarNuevoSignificado(palabra) {
         },
         body: `palabra=${encodeURIComponent(palabra)}&significado=${encodeURIComponent(significado)}`
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            ocultarSignificadoFormContainer();
-            mostrarFicha(palabra);
-        } else {
-            alert('Error: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al guardar el significado');
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                ocultarSignificadoFormContainer();
+                mostrarFicha(palabra);
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al guardar el significado');
+        });
 }
 
