@@ -3,8 +3,8 @@ use codigo\brigit\includes\tables\RankingTable;
 require_once __DIR__.'/includes/config.php';
 
 $table = new RankingTable();
-
-$htmlTable = $table->search($_GET['palabra'] ?? "null");
+$palabra = $_GET['palabra'] ?? null;
+$htmlTable = $table->manage($_GET['palabra'] ?? "null");
 
 $contenidoPrincipal = <<<EOS
 EOS;

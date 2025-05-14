@@ -10,7 +10,9 @@ $htmlTable = $table->manage();
 $tituloPagina = 'Ranking';
 
 $contenidoPrincipal = <<<EOS
+
 $htmlTable
+
 EOS;
 
 require __DIR__.'/includes/vistas/plantillas/plantilla.php';

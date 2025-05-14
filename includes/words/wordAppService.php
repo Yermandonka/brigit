@@ -38,11 +38,11 @@ class wordAppService
         return $words;
     }
 
-    public function getTheseWords($word)
+    public function getThisWord($word)
     {
         $IWordDAO = wordFactory::CreateWord();
 
-        $words = $IWordDAO->getTheseWords($word);
+        $words = $IWordDAO->getThisWord($word);
 
         return $words;
     }

@@ -3,15 +3,24 @@ namespace codigo\brigit\includes\votes;
 
 class voteDTO
 {
+    private const VALID_TYPES = ['like', 'dislike'];
     private $voter;
-    private $meaning;
-    private $type;
+    private $meaning_id;
+    private $tipe;
 
-    public function __construct($voter, $meaning, $type)
+    public function __construct($voter, $meaning_id, $tipe)
     {
+        if (!in_array($tipe, self::VALID_TYPES)) {
+            throw new \InvalidArgumentException('El tipo debe ser "like" o "dislike"');
+        }
+        
         $this->voter = $voter;
-        $this->meaning = $meaning;
-        $this->type = $type;
+        $this->meaning_id = $meaning_id;
+        $this->tipe = $tipe;
+    }
+    public function meaning_id()
+    {
+        return $this->meaning_id;
     }
 
     public function voter()
@@ -19,14 +28,14 @@ class voteDTO
         return $this->voter;
     }
 
-    public function meaning()
+    public function tipe()
     {
-        return $this->meaning;
+        return $this->tipe;
     }
 
-    public function type()
+    public static function getValidTypes()
     {
-        return $this->type;
+        return self::VALID_TYPES;
     }
 }
 ?>

@@ -11,5 +11,10 @@ class wordMock implements IWord
     {
         return [];
     }
+
+    public function getThisWord($word)
+    {
+        return new wordDTO(1, $word, "creator");
+    }
 }
 ?>

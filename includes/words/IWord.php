@@ -4,6 +4,6 @@ interface IWord
 {
     public function create($wordDTO);
     public function getAllWords();
-    public function getTheseWords($word);
+    public function getThisWord($word);
 }
 ?>

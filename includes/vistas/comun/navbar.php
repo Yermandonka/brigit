@@ -18,7 +18,7 @@
         <a class="nav-link" href="ranking.php">Ranking</a>
       </li>
       <li class="nav-item d-lg-none">
-        <a class="nav-link" href="buscador.php">Buscador</a>
+        <a class="nav-link" href="search.php">Buscador</a>
       </li>
       <li class="nav-item d-lg-none">
         <a class="nav-link" href="myArea.php">MyArea</a>

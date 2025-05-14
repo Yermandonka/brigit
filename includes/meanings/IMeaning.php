@@ -7,5 +7,7 @@ interface IMeaning
     public function getAllVotes($word);
     public function getMeaningId($word, $meaning);
     public function addVote($word, $meaning, $add);
+
+    public function getAllWords($word);
 }
 ?>

@@ -9,38 +9,40 @@ class voteDAO extends baseDAO implements IVote
     {
     }
 
-    public function create($voteDTO)
+    public function create($voteDTO) 
     {
-        $createdVoteDTO = false;
-
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        // Cambiado 'type' por 'tipe' para coincidir con la base de datos
+        $query = "INSERT INTO votes(voter, meaning_id, tipe) VALUES (?, ?, ?)";
+        
         try {
-            $escVoter = $this->realEscapeString($voteDTO->voter());
-            $escMeaning = $this->realEscapeString($voteDTO->meaning());
-            $escType = $this->realEscapeString($voteDTO->type());
-
-            $conn = Aplicacion::getInstance()->getConexionBd();
-            $query = "INSERT INTO votes(voter, meaning_id, type) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("sis", $escVoter, $escMeaning, $escType);
-
+            
+            $voter = $voteDTO->voter();
+            $meaningId = $voteDTO->meaning_id();
+            $type = $voteDTO->tipe();
+            
+            $stmt->bind_param("sis", $voter, $meaningId, $type);
+            
             if ($stmt->execute()) {
-                $createdVoteDTO = new voteDTO($voteDTO->voter(), $voteDTO->meaning(), $voteDTO->type());
-                return $createdVoteDTO;
+                return new VoteDTO($voter, $meaningId, $type);
             }
-        } catch (\mysqli_sql_exception $e) {
-            if ($conn->sqlstate == 23000) {
-                throw new voteAlreadyExistException("Ya existe este voto");
-            }
+            
+            return false;
+        } catch (\Exception $e) {
+            error_log("Error in voteDAO->create: " . $e->getMessage());
             throw $e;
+        } finally {
+            if (isset($stmt)) {
+                $stmt->close();
+            }
         }
-
-        return $createdVoteDTO;
     }
 
     public function getUserVote($voter, $meaning_id)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT type FROM votes WHERE voter = ? AND meaning_id = ?";
+        $query = "SELECT tipe FROM votes WHERE voter = ? AND meaning_id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("si", $voter, $meaning_id);
         $stmt->execute();
@@ -58,14 +60,22 @@ class voteDAO extends baseDAO implements IVote
     public function updateVoteType($voter, $meaning_id, $type)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "UPDATE votes SET type = ? WHERE voter = ? AND meaning_id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("ssi", $type, $voter, $meaning_id);
+        $query = "UPDATE votes SET tipe = ? WHERE voter = ? AND meaning_id = ?";
         
-        if ($stmt->execute()) {
-            return true;
+        try {
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("ssi", $type, $voter, $meaning_id);
+            
+            $result = $stmt->execute();
+            
+            return $result;
+        } catch (\Exception $e) {
+            error_log("Error in updateVoteType: " . $e->getMessage());
+            throw $e;
+        } finally {
+            if (isset($stmt)) {
+                $stmt->close();
+            }
         }
-        
-        return false;
     }
 }

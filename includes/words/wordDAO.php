@@ -97,9 +97,9 @@ class wordDAO extends baseDAO implements IWord
         return $words;
     }
 
-    public function getTheseWords($word)
-    {
-        $words = [];
+    public function getThisWord($word)
+    {   
+        $word1 = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
 
         $query = "SELECT id, word, creator FROM Words WHERE word LIKE ?";
@@ -114,12 +114,11 @@ class wordDAO extends baseDAO implements IWord
         $stmt->bind_result($id, $palabra, $creador);
 
         while ($stmt->fetch()) {
-            $word = new wordDTO($id, $palabra, $creador);
-            $words[] = $word;
+            $word1 = new wordDTO($id, $palabra, $creador);
         }
 
         $stmt->close();
-        return $words;
+        return $word1;
     }
 
 }

@@ -16,6 +16,8 @@ DROP TABLE IF EXISTS `UserRoles`;
 DROP TABLE IF EXISTS `Roles`;
 DROP TABLE IF EXISTS `Words`;
 DROP TABLE IF EXISTS `Users`;
+DROP TABLE IF EXISTS `Meanings`;
+DROP TABLE IF EXISTS `Votes`;
 
 CREATE TABLE IF NOT EXISTS `Roles` (
   `id` int(11) NOT NULL AUTO_INCREMENT UNIQUE,
@@ -65,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `Meanings` (
 CREATE TABLE IF NOT EXISTS `Votes` (
   `voter` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   `meaning_id` int(11) NOT NULL,
-  `type` enum('like', 'dislike') COLLATE utf8mb4_general_ci NOT NULL,
+  `tipe` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`voter`, `meaning_id`),
   CONSTRAINT `fk_votes_voter`
     FOREIGN KEY (`voter`) REFERENCES `Users`(`username`)
@@ -82,6 +84,9 @@ USE brigit;
 TRUNCATE TABLE `UserRoles`;
 TRUNCATE TABLE `Roles`;
 TRUNCATE TABLE `Users`;
+TRUNCATE TABLE `Words`;
+TRUNCATE TABLE `Meanings`;
+TRUNCATE TABLE `Votes`;
 
 INSERT INTO `Roles` (`id`, `name`) VALUES
 (1, 'admin'),

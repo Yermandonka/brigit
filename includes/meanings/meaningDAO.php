@@ -2,6 +2,7 @@
 namespace codigo\brigit\includes\meanings;
 use codigo\brigit\includes\Aplicacion;
 use codigo\brigit\includes\baseDAO;
+use codigo\brigit\includes\words\wordAppService;
 
 class meaningDAO extends baseDAO implements IMeaning
 {
@@ -173,13 +174,14 @@ class meaningDAO extends baseDAO implements IMeaning
         $conn = Aplicacion::getInstance()->getConexionBd();
 
         $escPalabra = $this->realEscapeString($word);
-        $escSignificado = $this->realEscapeString($meaning);
+        $escSignificado = $this->realEscapeString(html_entity_decode($meaning, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $escSignificado2 = $this->realEscapeString(htmlentities($escSignificado, ENT_QUOTES, 'UTF-8'));
 
         $query = "SELECT id FROM meanings WHERE word = ? AND meaning = ?";
 
         $stmt = $conn->prepare($query);
 
-        $stmt->bind_param("ss", $escPalabra, $escSignificado);
+        $stmt->bind_param("ss", $escPalabra, $escSignificado2);
         $stmt->execute();
         $stmt->bind_result($id);
 
@@ -187,8 +189,38 @@ class meaningDAO extends baseDAO implements IMeaning
             return $id;
         }
 
-        return false;
+        return null;
     }
 
+    public function getAllWords($word)
+    {
+        $words = [];
+        $wordDTOs = [];
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $query = "SELECT DISTINCT word FROM meanings WHERE meaning LIKE CONCAT('%', ?, '%')";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->bind_param("s", $word);
+        $stmt->execute();
+        $stmt->bind_result($foundWord);
+
+        while ($stmt->fetch()) {
+            $words[] = $foundWord;
+        }
+
+        $stmt->close();
+
+        $wordAppService = wordAppService::GetSingleton();
+        foreach ($words as $word) {
+            $wordDTO = $wordAppService->getThisWord($word);
+            if ($wordDTO) {
+                $wordDTOs[] = $wordDTO;
+            }
+        }
+
+        return $wordDTOs;
+    }
 }
 ?>
