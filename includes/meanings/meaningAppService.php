@@ -77,11 +77,11 @@ class meaningAppService
         return $meaningDAO->getMeaningId($word, $meaning);
     }
 
-    public function getAllWords($word, $user = null)
+    public function getAllWords($word)
     {
         $IMeaningDAO = meaningFactory::CreateMeaning();
 
-        $meanings = $IMeaningDAO->getAllWords($word, $user);
+        $meanings = $IMeaningDAO->getAllWords($word);
 
         return $meanings;
     }
