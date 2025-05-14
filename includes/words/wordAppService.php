@@ -29,11 +29,11 @@ class wordAppService
         return $createdWordDTO;
     }
 
-    public function getAllWords()
+    public function getAllWords($user)
     {
         $IWordDAO = wordFactory::CreateWord();
 
-        $words = $IWordDAO->getAllWords();
+        $words = $IWordDAO->getAllWords($user);
 
         return $words;
     }
@@ -45,6 +45,13 @@ class wordAppService
         $words = $IWordDAO->getThisWord($word);
 
         return $words;
+    }
+
+    public function delete($word)
+    {
+        $IWordDAO = wordFactory::CreateWord();
+
+        $IWordDAO->delete($word);
     }
 
 }

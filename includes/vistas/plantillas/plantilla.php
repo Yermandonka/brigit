@@ -42,13 +42,6 @@
 				</main>
 			</div>
 		</div>
-		<div class="row footer w-100">
-			<div class="col">
-				<?php
-				require(RAIZ_APP . '/vistas/comun/footer.php');
-				?>
-			</div>
-		</div>
 	</div>
 </body>
 

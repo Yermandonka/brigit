@@ -4,38 +4,24 @@ use codigo\brigit\includes\words\wordAppService;
 use codigo\brigit\includes\meanings\meaningAppService;
 use codigo\brigit\includes\votes\voteAppService;
 
-class RankingTable
+class myWordsTable
 {
     public function __construct()
     {
     }
-    private function mostrarLista($palabra = null)
+    private function mostrarLista()
     {
+        
+        $usuarioLogueado = isset($_SESSION["login"]) && ($_SESSION["login"] === true);
+        $voter = $_SESSION['nombre'] ?? '';
+
         $wordAppService = wordAppService::GetSingleton();
         $meaningAppService = meaningAppService::GetSingleton();
-        if ($palabra == null) {
-            $words = $wordAppService->getAllWords(null);
-        } else if ($palabra == "null") {
-            $words = [];
-        } else {
-            $word = $wordAppService->getThisWord($palabra);
-            $palabras = $meaningAppService->getAllWords($palabra);
-
-            $words = [];
-            if ($word) {
-                $words[] = $word;
-            }
-            foreach ($palabras as $w) {
-                if (!in_array($w, $words, true)) {
-                    $words[] = $w;
-                }
-            }
-        }
+        $words = $wordAppService->getAllWords($voter);
+        
         $filas = "";
         $contador = 1;
 
-        $usuarioLogueado = isset($_SESSION["login"]) && ($_SESSION["login"] === true);
-        $voter = $_SESSION['nombre'] ?? '';
 
         foreach ($words as $w) {
             $meanings = $meaningAppService->getAllMeanings($w->palabra(), null);
@@ -98,7 +84,7 @@ class RankingTable
         }
     }
 
-    public function manage($palabra = null)
+    public function manage()
     {
         $html = <<<EOF
 <div class="row rankingTable">
@@ -121,7 +107,7 @@ class RankingTable
         </thead>
         <tbody>
 EOF;
-        $html .= $this->mostrarLista($palabra); // Agregas la lista aquí
+        $html .= $this->mostrarLista(); // Agregas la lista aquí
         $html .= <<<EOF
         </tbody>
     </table>

@@ -29,20 +29,20 @@ class meaningAppService
         return $createdMeaningDTO;
     }
 
-    public function getThisMeaning($word)
+    public function getThisMeaning($word, $meaning)
     {
         $IMeaningDAO = meaningFactory::CreateMeaning();
 
-        $meaningDTO = $IMeaningDAO->getThisMeaning($word);
+        $meaningDTO = $IMeaningDAO->getThisMeaning($word, $meaning);
 
         return $meaningDTO;
     }
 
-    public function getAllMeanings($word)
+    public function getAllMeanings($word, $user)
     {
         $IMeaningDAO = meaningFactory::CreateMeaning();
 
-        $meanings = $IMeaningDAO->getAllMeanings($word);
+        $meanings = $IMeaningDAO->getAllMeanings($word, $user);
 
         return $meanings;
     }
@@ -77,11 +77,11 @@ class meaningAppService
         return $meaningDAO->getMeaningId($word, $meaning);
     }
 
-    public function getAllWords($word)
+    public function getAllWords($word, $user)
     {
         $IMeaningDAO = meaningFactory::CreateMeaning();
 
-        $meanings = $IMeaningDAO->getAllWords($word);
+        $meanings = $IMeaningDAO->getAllWords($word, $user);
 
         return $meanings;
     }

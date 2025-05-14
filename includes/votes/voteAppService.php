@@ -36,5 +36,11 @@ class voteAppService
         $voteDAO = voteFactory::CreateVote();
         return $voteDAO->updateVoteType($voter, $meaning_id, $type);
     }
+
+    public function getAllVotes($user = null)
+    {
+        $voteDAO = voteFactory::CreateVote();
+        return $voteDAO->getAllVotes($user);
+    }
 }
 ?>

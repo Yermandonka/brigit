@@ -4,49 +4,30 @@ use codigo\brigit\includes\words\wordAppService;
 use codigo\brigit\includes\meanings\meaningAppService;
 use codigo\brigit\includes\votes\voteAppService;
 
-class RankingTable
+class myMeaningsTable
 {
     public function __construct()
     {
     }
-    private function mostrarLista($palabra = null)
+    private function mostrarLista()
     {
-        $wordAppService = wordAppService::GetSingleton();
+        $voter = $_SESSION['nombre'] ?? '';
         $meaningAppService = meaningAppService::GetSingleton();
-        if ($palabra == null) {
-            $words = $wordAppService->getAllWords(null);
-        } else if ($palabra == "null") {
-            $words = [];
-        } else {
-            $word = $wordAppService->getThisWord($palabra);
-            $palabras = $meaningAppService->getAllWords($palabra);
-
-            $words = [];
-            if ($word) {
-                $words[] = $word;
-            }
-            foreach ($palabras as $w) {
-                if (!in_array($w, $words, true)) {
-                    $words[] = $w;
-                }
-            }
-        }
+        $meanings = $meaningAppService->getAllMeanings(null, $voter);
         $filas = "";
         $contador = 1;
 
         $usuarioLogueado = isset($_SESSION["login"]) && ($_SESSION["login"] === true);
-        $voter = $_SESSION['nombre'] ?? '';
 
-        foreach ($words as $w) {
-            $meanings = $meaningAppService->getAllMeanings($w->palabra(), null);
-            $votes = $meaningAppService->getAllVotes($w->palabra());
-            $significado = $this->limitarTexto($meanings[0]->significado(), 80);
-            $noEsMio = $w->creador() !== $voter;
+
+        foreach ($meanings as $m) {
+            $significado = $this->limitarTexto($m->significado(), 80);
 
             // Obtener el voto actual del usuario para este significado
             $voteAppService = voteAppService::GetSingleton();
-            $meaningId = $meaningAppService->getMeaningId($w->palabra(), $significado);
+            $meaningId = $meaningAppService->getMeaningId($m->palabra(), $significado);
             $votoActual = $usuarioLogueado ? $voteAppService->getUserVote($voter, $meaningId) : null;
+            $noEsMio = $m->creador() !== $voter;
 
             $hayVariosSignificados = count($meanings) > 1;
             $contenidoSignificado = $hayVariosSignificados ? "Hay varios significados" : $significado;
@@ -62,19 +43,19 @@ class RankingTable
             $tooltipTitle = !$usuarioLogueado ? "title='Debes iniciar sesión para votar'" : "";
 
             $onClickLike = ($hayVariosSignificados || !$usuarioLogueado) ? ""
-                : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"like\", this)'";
+                : "onclick='votar(\"{$m->palabra()}\", \"{$significado}\", \"like\", this)'";
             $onClickDislike = ($hayVariosSignificados || !$usuarioLogueado) ? ""
-                : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"dislike\", this)'";
+                : "onclick='votar(\"{$m->palabra()}\", \"{$significado}\", \"dislike\", this)'";
             $onClickDelete = ($hayVariosSignificados || !$usuarioLogueado || $noEsMio) ? ""
-                : "onclick='eliminar(\"{$w->palabra()}\", \"{$significado}\", this)'";
+                : "onclick='eliminar(\"{$m->palabra()}\", \"{$significado}\", this)'";
 
 
-            $filas .= "<tr class='filaRankingTable' id='{$w->palabra()}' onclick='mostrarFicha(\"{$w->palabra()}\", \"{$significado}\", \"{$w->creador()}\")' style='cursor: pointer;'>
+            $filas .= "<tr class='filaRankingTable' id='{$m->palabra()}' onclick='mostrarFicha(\"{$m->palabra()}\", \"{$significado}\", \"{$m->creador()}\")' style='cursor: pointer;'>
         <td>{$contador}</td>
-        <td>{$w->palabra()}</td>
+        <td>{$m->palabra()}</td>
         <td>{$contenidoSignificado}</td>
-        <td>{$w->creador()}</td>
-        <td>{$votes}</td>
+        <td>{$m->creador()}</td>
+        <td>{$m->votos()}</td>
         <td class='reacciones'>
             <button type='button' name='accion' value='like' class='btn-like' {$estiloBotonLike} {$tooltipTitle} {$onClickLike}>👍</button>
             <button type='button' name='accion' value='dislike' class='btn-dislike' {$estiloBotonDislike} {$tooltipTitle} {$onClickDislike}>👎</button>
@@ -98,7 +79,7 @@ class RankingTable
         }
     }
 
-    public function manage($palabra = null)
+    public function manage()
     {
         $html = <<<EOF
 <div class="row rankingTable">
@@ -121,7 +102,7 @@ class RankingTable
         </thead>
         <tbody>
 EOF;
-        $html .= $this->mostrarLista($palabra); // Agregas la lista aquí
+        $html .= $this->mostrarLista(); // Agregas la lista aquí
         $html .= <<<EOF
         </tbody>
     </table>

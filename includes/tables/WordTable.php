@@ -12,7 +12,7 @@ class WordTable
     private function mostrarLista($palabra = null)
     {
         $meaningAppService = meaningAppService::GetSingleton();
-        $meanings = $meaningAppService->getAllMeanings($palabra);
+        $meanings = $meaningAppService->getAllMeanings($palabra, null);
         $filas = "";
         $contador = 1;
 
@@ -42,8 +42,8 @@ class WordTable
                 : "onclick='votar2(\"{$m->palabra()}\", \"{$m->significado()}\", \"like\", this)'";
             $onClickDislike = (!$usuarioLogueado) ? ""
                 : "onclick='votar2(\"{$m->palabra()}\", \"{$m->significado()}\", \"dislike\", this)'";
-            $onClickDelete = (!$usuarioLogueado) ? ""
-                : "onclick='eliminar(\"{$m->palabra()}\", this)'";
+            $onClickDelete = (!$usuarioLogueado || $noEsMio) ? ""
+                : "onclick='eliminar(\"{$m->palabra()}\", \"{$m->significado()}\", this)'";
 
             $filas .= "<tr class='filaRankingTable' id='{$m->significado()}''>
         <td>{$contador}</td>

@@ -209,10 +209,10 @@ function guardarNuevoSignificado(palabra) {
         });
 }
 
-function eliminar(palabra, boton) {
+function eliminar(palabra, significado, boton) {
     event.stopPropagation();
-    if (confirm('¿Estás seguro de que quieres borrar esta palabra?')) {
-        const url = `borrarPalabra.php?palabra=${encodeURIComponent(palabra)}`;
+    if (confirm('¿Estás seguro de que quieres borrar este significado?')) {
+        const url = `borrarPalabra.php?palabra=${palabra}&significado=${significado}`;
         
         fetch(url)
             .then(response => response.json())

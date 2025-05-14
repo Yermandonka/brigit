@@ -195,8 +195,33 @@ footer {
 
 /*----------------------------ROW MAIN----------------------------------*/
 
+div.row.main {
+    max-height: 80%; /* Ajusta el valor según el espacio que ocupen header y footer */
+    overflow-y: auto;
+    position: relative;
+}
+
 div.row.main .col {
-	padding: 5% 8% 8% 8%;
+    padding: 5% 8% 8% 8%;
+}
+
+/* Añade estilo al scrollbar para mejor apariencia */
+div.row.main::-webkit-scrollbar {
+    width: 8px;
+}
+
+div.row.main::-webkit-scrollbar-track {
+    background: rgba(248, 234, 241, 0.1);
+    border-radius: 10px;
+}
+
+div.row.main::-webkit-scrollbar-thumb {
+    background: #2d2428;
+    border-radius: 10px;
+}
+
+div.row.main::-webkit-scrollbar-thumb:hover {
+    background: #3d3438;
 }
 
 div.row.search .col {
@@ -700,3 +725,4 @@ tr.filaRankingTable:hover {
 		position: relative;
 	}
 }
+``` 

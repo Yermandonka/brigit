@@ -57,6 +57,29 @@ class voteDAO extends baseDAO implements IVote
         return false;
     }
 
+    public function getAllVotes($user = null)
+    {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT COUNT(*) FROM votes WHERE voter = ?";
+        
+        try {
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $user);
+            $stmt->execute();
+            $stmt->bind_result($count);
+            $stmt->fetch();
+            
+            return $count;
+        } catch (\Exception $e) {
+            error_log("Error in getAllVotes: " . $e->getMessage());
+            throw $e;
+        } finally {
+            if (isset($stmt)) {
+                $stmt->close();
+            }
+        }
+    }
+
     public function updateVoteType($voter, $meaning_id, $type)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();

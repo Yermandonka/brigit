@@ -77,14 +77,20 @@ class wordDAO extends baseDAO implements IWord
         return $createdWordDTO;
     }
 
-    public function getAllWords()
+    public function getAllWords($user = null)
     {
         $words = [];
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT id, word, creator FROM Words";
+        if ($user !== null) {
+            $query = "SELECT id, word, creator FROM Words WHERE creator = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $user);
+        } else {
+            $query = "SELECT id, word, creator FROM Words";
+            $stmt = $conn->prepare($query);
+        }
 
-        $stmt = $conn->prepare($query);
         $stmt->execute();
         $stmt->bind_result($id, $palabra, $creador);
 
@@ -119,6 +125,19 @@ class wordDAO extends baseDAO implements IWord
 
         $stmt->close();
         return $word1;
+    }
+
+    public function delete($word)
+    {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $query = "DELETE FROM Words WHERE word = ?";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->bind_param("s", $word);
+        $stmt->execute();
+        $stmt->close();
     }
 
 }

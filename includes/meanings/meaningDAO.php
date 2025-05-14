@@ -106,16 +106,32 @@ class meaningDAO extends baseDAO implements IMeaning
         return $createdMeaningDTO;
     }
 
-    public function getAllMeanings($word)
+    public function getAllMeanings($word = null, $user = null)
     {
         $meanings = [];
         $conn = Aplicacion::getInstance()->getConexionBd();
 
-        $query = "SELECT id, meaning, word, creator, votes FROM meanings WHERE word = ?";
+        if ($word && $user) {
+            // Si tenemos palabra y usuario
+            $query = "SELECT id, meaning, word, creator, votes FROM meanings WHERE word = ? AND creator = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("ss", $word, $user);
+        } elseif ($word) {
+            // Si solo tenemos palabra
+            $query = "SELECT id, meaning, word, creator, votes FROM meanings WHERE word = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $word);
+        } elseif ($user) {
+            // Si solo tenemos usuario
+            $query = "SELECT id, meaning, word, creator, votes FROM meanings WHERE creator = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $user);
+        } else {
+            // Si no tenemos ningún parámetro, devolver todos
+            $query = "SELECT id, meaning, word, creator, votes FROM meanings";
+            $stmt = $conn->prepare($query);
+        }
 
-        $stmt = $conn->prepare($query);
-
-        $stmt->bind_param("s", $word);
         $stmt->execute();
         $stmt->bind_result($id, $significado, $palabra, $creador, $votos);
 
@@ -247,16 +263,17 @@ class meaningDAO extends baseDAO implements IMeaning
         return $wordDTOs;
     }
 
-    public function getThisMeaning($word){
+    public function getThisMeaning($word, $meaning){
         $conn = Aplicacion::getInstance()->getConexionBd();
 
         $escPalabra = $this->realEscapeString($word);
+        $escSignificado = $this->realEscapeString(htmlentities($meaning, ENT_QUOTES, 'UTF-8'));
 
-        $query = "SELECT id, word, meaning, creator, votes FROM meanings WHERE word = ?";
+        $query = "SELECT id, word, meaning, creator, votes FROM meanings WHERE word = ? AND meaning = ?";
 
         $stmt = $conn->prepare($query);
 
-        $stmt->bind_param("s", $escPalabra);
+        $stmt->bind_param("ss", $escPalabra, $escSignificado);
         $stmt->execute();
         $stmt->bind_result($id, $palabra, $significado, $creador, $votos);
 
@@ -266,49 +283,22 @@ class meaningDAO extends baseDAO implements IMeaning
 
         return null;
     }
-
+    
     public function delete($meaningDTO)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        
-        try {
-            // Iniciamos transacción para asegurar la integridad
-            $conn->begin_transaction();
-            
-            $escPalabra = $this->realEscapeString($meaningDTO->palabra());
-            $escSignificado = $this->realEscapeString(htmlentities($meaningDTO->significado(), ENT_QUOTES, 'UTF-8'));
 
-            // Primero obtenemos la posición actual del significado
-            $queryPos = "SELECT id FROM meanings WHERE word = ? AND meaning = ?";
-            $stmtPos = $conn->prepare($queryPos);
-            $stmtPos->bind_param("ss", $escPalabra, $escSignificado);
-            $stmtPos->execute();
-            $stmtPos->bind_result($idActual);
-            $stmtPos->fetch();
-            $stmtPos->close();
+        $escPalabra = $this->realEscapeString($meaningDTO->palabra());
+        $escSignificado = $this->realEscapeString(html_entity_decode($meaningDTO->significado(), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $escSignificado2 = $this->realEscapeString(htmlentities($escSignificado, ENT_QUOTES, 'UTF-8'));
 
-            // Borramos el significado
-            $queryDelete = "DELETE FROM meanings WHERE word = ? AND meaning = ?";
-            $stmtDelete = $conn->prepare($queryDelete);
-            $stmtDelete->bind_param("ss", $escPalabra, $escSignificado);
-            $stmtDelete->execute();
-            $stmtDelete->close();
+        $query = "DELETE FROM meanings WHERE word = ? AND meaning = ?";
 
-            // Actualizamos las posiciones de los significados restantes
-            $queryUpdate = "UPDATE meanings SET id = id - 1 WHERE id > ?";
-            $stmtUpdate = $conn->prepare($queryUpdate);
-            $stmtUpdate->bind_param("i", $idActual);
-            $stmtUpdate->execute();
-            $stmtUpdate->close();
+        $stmt = $conn->prepare($query);
 
-            // Confirmamos la transacción
-            $conn->commit();
-
-        } catch (\Exception $e) {
-            // Si algo sale mal, revertimos los cambios
-            $conn->rollback();
-            throw $e;
-        }
+        $stmt->bind_param("ss", $escPalabra, $escSignificado);
+        $stmt->execute();
+        $stmt->close();
     }
 }
 ?>
