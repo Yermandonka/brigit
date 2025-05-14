@@ -3,7 +3,6 @@ var cambiarCSS = function (nuevo) {
 }
 
 function mostrarFicha(palabra, significado, creador) {
-    const fichaContainer = document.getElementById('fichaContainer');
     const fichaContent = document.getElementById('fichaContent');
 
     // Hacer la petición AJAX para obtener la WordTable
@@ -19,9 +18,13 @@ function mostrarFicha(palabra, significado, creador) {
                 <button id="buttonFichaContent" onclick="ocultarFichaContainer()">✕</button>
                 <h2 class="ficha-title">Significados de ${palabra}</h2>
                 <div class="wordTable-container">${html}</div>
-                <button id="btnAddSignificado" onclick="mostrarFormNuevoSignificado('${palabra}')" class="btn-add">
+                <button id="btnAddSignificado" onclick="mostrarFicha2()" class="btn-add">
                     + Añadir significado
                 </button>
+                <div id="significadoFormContainer" style="display:none">
+            <div id="significadoForm">                    
+            </div>
+        </div>
             `;
             mostrarFichaContainer();
         })
@@ -104,32 +107,42 @@ function votar(palabra, significado, tipo, boton) {
         });
 }
 
-function mostrarFormNuevoSignificado(palabra) {
-    const formContainer = document.createElement('div');
-    formContainer.id = 'formNuevoSignificado';
-    formContainer.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1001;';
-
-    formContainer.innerHTML = `
-        <div class="form-content" style="background: white; padding: 2rem; border-radius: 10px; width: 90%; max-width: 600px;">
-            <button onclick="cerrarFormNuevoSignificado()" style="float: right; border: none; background: none; font-size: 24px; cursor: pointer;">✕</button>
-            <h3>Añadir nuevo significado para "${palabra}"</h3>
-            <textarea id="nuevoSignificado" style="width: 100%; margin: 1rem 0; padding: 0.5rem; height: 100px;"></textarea>
-            <button onclick="guardarNuevoSignificado('${palabra}')" style="background: black; color: white; border: none; padding: 0.5rem 1rem; cursor: pointer;">Guardar</button>
-        </div>
-    `;
-
-    document.body.appendChild(formContainer);
+function mostrarSignificadoFormContainer() {
+    document.getElementById('significadoFormContainer').style.display = 'flex';
 }
 
-function cerrarFormNuevoSignificado() {
-    const form = document.getElementById('formNuevoSignificado');
-    if (form) {
-        form.remove();
-    }
+function ocultarSignificadoFormContainer() {
+    document.getElementById('significadoFormContainer').style.display = 'none';
+}
+
+function mostrarFicha2() {
+    const fichaContent = document.getElementById('significadoForm');
+    
+    fichaContent.innerHTML = `
+        <form id="formNuevoSignificado">
+            <div class="form-group">
+                <label for="nuevoSignificado">Nuevo significado:</label>
+                <textarea id="nuevoSignificado" class="form-control" required></textarea>
+            </div>
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-secondary" onclick="ocultarSignificadoFormContainer()">Cancelar</button>
+            </div>
+        </form>
+    `;
+
+   mostrarSignificadoFormContainer();
+
+    // Agregar el event listener para el formulario
+    document.getElementById('formNuevoSignificado').addEventListener('submit', function(e) {
+        e.preventDefault();
+        guardarNuevoSignificado(document.querySelector('.ficha-title').textContent.split(' ').pop());
+    });
 }
 
 function guardarNuevoSignificado(palabra) {
     const significado = document.getElementById('nuevoSignificado').value;
+    
     if (!significado.trim()) {
         alert('Por favor, introduce un significado');
         return;
@@ -145,11 +158,10 @@ function guardarNuevoSignificado(palabra) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            cerrarFormNuevoSignificado();
-            // Recargar la tabla de significados
+            ocultarSignificadoFormContainer();
             mostrarFicha(palabra);
         } else {
-            alert('Error al guardar el significado');
+            alert('Error: ' + data.message);
         }
     })
     .catch(error => {
