@@ -47,10 +47,12 @@ if ($palabra && $significado && $tipo && $voter) {
 
         // Obtener el nuevo conteo de votos
         $votes = $meaningAppService->getAllVotes($palabra);
+        $votesMeaning = $meaningAppService->getVotes($palabra, $significado);
         
         $response = [
             'success' => true,
             'votes' => $votes,
+            'votesMeaning' => $votesMeaning,
             'lastVote' => $lastVoto
         ];
     } catch (Exception $e) {

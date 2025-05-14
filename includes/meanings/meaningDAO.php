@@ -149,6 +149,30 @@ class meaningDAO extends baseDAO implements IMeaning
         return $votes;
     }
 
+    public function getVotes($word, $meaning)
+    {
+        $votes = 0;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $escPalabra = $this->realEscapeString($word);
+        $escSignificado = $this->realEscapeString(htmlentities($meaning, ENT_QUOTES, 'UTF-8'));
+
+        $query = "SELECT votes FROM meanings WHERE word = ? AND meaning = ?";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->bind_param("ss", $escPalabra, $escSignificado);
+        $stmt->execute();
+        $stmt->bind_result($votos);
+
+        while ($stmt->fetch()) {
+            $votes += $votos;
+        }
+
+        $stmt->close();
+        return $votes;
+    }
+
     public function addVote($word, $meaning, $add)
     {
         $conn = Aplicacion::getInstance()->getConexionBd();
@@ -221,6 +245,70 @@ class meaningDAO extends baseDAO implements IMeaning
         }
 
         return $wordDTOs;
+    }
+
+    public function getThisMeaning($word){
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        $escPalabra = $this->realEscapeString($word);
+
+        $query = "SELECT id, word, meaning, creator, votes FROM meanings WHERE word = ?";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->bind_param("s", $escPalabra);
+        $stmt->execute();
+        $stmt->bind_result($id, $palabra, $significado, $creador, $votos);
+
+        if ($stmt->fetch()) {
+            return new meaningDTO($id, $palabra, $significado, $creador, $votos);
+        }
+
+        return null;
+    }
+
+    public function delete($meaningDTO)
+    {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        
+        try {
+            // Iniciamos transacción para asegurar la integridad
+            $conn->begin_transaction();
+            
+            $escPalabra = $this->realEscapeString($meaningDTO->palabra());
+            $escSignificado = $this->realEscapeString(htmlentities($meaningDTO->significado(), ENT_QUOTES, 'UTF-8'));
+
+            // Primero obtenemos la posición actual del significado
+            $queryPos = "SELECT id FROM meanings WHERE word = ? AND meaning = ?";
+            $stmtPos = $conn->prepare($queryPos);
+            $stmtPos->bind_param("ss", $escPalabra, $escSignificado);
+            $stmtPos->execute();
+            $stmtPos->bind_result($idActual);
+            $stmtPos->fetch();
+            $stmtPos->close();
+
+            // Borramos el significado
+            $queryDelete = "DELETE FROM meanings WHERE word = ? AND meaning = ?";
+            $stmtDelete = $conn->prepare($queryDelete);
+            $stmtDelete->bind_param("ss", $escPalabra, $escSignificado);
+            $stmtDelete->execute();
+            $stmtDelete->close();
+
+            // Actualizamos las posiciones de los significados restantes
+            $queryUpdate = "UPDATE meanings SET id = id - 1 WHERE id > ?";
+            $stmtUpdate = $conn->prepare($queryUpdate);
+            $stmtUpdate->bind_param("i", $idActual);
+            $stmtUpdate->execute();
+            $stmtUpdate->close();
+
+            // Confirmamos la transacción
+            $conn->commit();
+
+        } catch (\Exception $e) {
+            // Si algo sale mal, revertimos los cambios
+            $conn->rollback();
+            throw $e;
+        }
     }
 }
 ?>

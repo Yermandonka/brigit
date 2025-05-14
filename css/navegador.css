@@ -524,7 +524,8 @@ div#rankingTable tr:hover {
 }
 
 .btn-like,
-.btn-dislike {
+.btn-dislike,
+.btn-delete {
 	border: none;
 	background-color: transparent;
 	font-size: 1.3em;
@@ -533,12 +534,14 @@ div#rankingTable tr:hover {
 }
 
 .btn-like:hover,
-.btn-dislike:hover {
+.btn-dislike:hover,
+.btn-delete:hover {
 	transform: scale(1.2);
 }
 
 .btn-like:focus,
-.btn-dislike:focus {
+.btn-dislike:focus,
+.btn-delete:focus {
 	outline: none;
 }
 
@@ -616,16 +619,32 @@ tr.filaRankingTable:hover {
 			transition: background-color 0.3s ease;
 		}
 
-		.btn-like,
-		.btn-dislike {
-			color: #000000;
-		}
-
 		* {
 			font-family: 'Times New Roman', Times, serif;
 			color: black;
 		}
 	}
+}
+
+.wordTable-container {
+    max-height: 350px;
+    overflow-y: auto;
+    border-radius: 8px;
+}
+
+.wordTable-container table {
+    width: 100%;
+}
+
+.wordTable-container thead {
+    position: sticky;
+    top: 0;
+    background-color: #000;
+    z-index: 1;
+}
+
+.wordTable-container tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 /*----------------------------RESPONSIVE----------------------------------*/

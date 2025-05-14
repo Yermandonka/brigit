@@ -26,19 +26,24 @@ class WordTable
             $voteAppService = voteAppService::GetSingleton();
             $meaningId = $meaningAppService->getMeaningId($m->palabra(), $significado);
             $votoActual = $usuarioLogueado ? $voteAppService->getUserVote($voter, $meaningId) : null;
+            $noEsMio = $m->creador() !== $voter;
 
             // Modificar el estilo de los botones según el voto actual
             $estiloBotonLike = (!$usuarioLogueado || $votoActual === 'like')
                 ? "style='opacity:0.5; cursor:not-allowed;' disabled" : "";
             $estiloBotonDislike = (!$usuarioLogueado || $votoActual === 'dislike')
                 ? "style='opacity:0.5; cursor:not-allowed;' disabled" : "";
+            $estiloBotonDelete = (!$usuarioLogueado || $noEsMio)
+                ? "style='display:none;' disabled" : "";
 
             $tooltipTitle = !$usuarioLogueado ? "title='Debes iniciar sesión para votar'" : "";
 
             $onClickLike = (!$usuarioLogueado) ? ""
-                : "onclick='votar2(\"{$m->palabra()}\", \"{$m->significado()}\", \"like\", this, 'wordTable')'";
+                : "onclick='votar2(\"{$m->palabra()}\", \"{$m->significado()}\", \"like\", this)'";
             $onClickDislike = (!$usuarioLogueado) ? ""
-                : "onclick='votar2(\"{$m->palabra()}\", \"{$m->significado()}\", \"dislike\", this, 'wordTable')'";
+                : "onclick='votar2(\"{$m->palabra()}\", \"{$m->significado()}\", \"dislike\", this)'";
+            $onClickDelete = (!$usuarioLogueado) ? ""
+                : "onclick='eliminar(\"{$m->palabra()}\", this)'";
 
             $filas .= "<tr class='filaRankingTable' id='{$m->significado()}''>
         <td>{$contador}</td>
@@ -48,6 +53,7 @@ class WordTable
         <td class='reacciones'>
             <button type='button' name='accion' value='like' class='btn-like' {$estiloBotonLike} {$tooltipTitle} {$onClickLike}>👍</button>
             <button type='button' name='accion' value='dislike' class='btn-dislike' {$estiloBotonDislike} {$tooltipTitle} {$onClickDislike}>👎</button>
+            <button type='button' name='accion' value='delete' class='btn-delete' {$estiloBotonDelete} {$onClickDelete}>🗑️</button>
         </td>
     </tr>";
 
@@ -78,7 +84,7 @@ class WordTable
                 <th>Significado</th>
                 <th>Creador</th>
                 <th>Votos</th>
-                <th>Reacciones</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>

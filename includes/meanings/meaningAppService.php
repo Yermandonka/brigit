@@ -29,6 +29,15 @@ class meaningAppService
         return $createdMeaningDTO;
     }
 
+    public function getThisMeaning($word)
+    {
+        $IMeaningDAO = meaningFactory::CreateMeaning();
+
+        $meaningDTO = $IMeaningDAO->getThisMeaning($word);
+
+        return $meaningDTO;
+    }
+
     public function getAllMeanings($word)
     {
         $IMeaningDAO = meaningFactory::CreateMeaning();
@@ -45,6 +54,14 @@ class meaningAppService
         $meanings = $IMeaningDAO->getAllVotes($word);
 
         return $meanings;
+    }
+    public function getVotes($word, $meaning)
+    {
+        $IMeaningDAO = meaningFactory::CreateMeaning();
+
+        $votes = $IMeaningDAO->getVotes($word, $meaning);
+
+        return $votes;
     }
 
     public function addVote($word, $meaning, $add)
@@ -67,6 +84,13 @@ class meaningAppService
         $meanings = $IMeaningDAO->getAllWords($word);
 
         return $meanings;
+    }
+
+    public function delete($meaningDTO)
+    {
+        $IMeaningDAO = meaningFactory::CreateMeaning();
+
+        $IMeaningDAO->delete($meaningDTO);
     }
 }
 ?>

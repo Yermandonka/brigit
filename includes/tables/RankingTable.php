@@ -41,6 +41,7 @@ class RankingTable
             $meanings = $meaningAppService->getAllMeanings($w->palabra());
             $votes = $meaningAppService->getAllVotes($w->palabra());
             $significado = $this->limitarTexto($meanings[0]->significado(), 80);
+            $noEsMio = $w->creador() !== $voter;
 
             // Obtener el voto actual del usuario para este significado
             $voteAppService = voteAppService::GetSingleton();
@@ -55,6 +56,8 @@ class RankingTable
                 ? "style='opacity:0.5; cursor:not-allowed;' disabled" : "";
             $estiloBotonDislike = ($hayVariosSignificados || !$usuarioLogueado || $votoActual === 'dislike')
                 ? "style='opacity:0.5; cursor:not-allowed;' disabled" : "";
+            $estiloBotonDelete = ($hayVariosSignificados || !$usuarioLogueado || $noEsMio)
+                ? "style='display:none;' disabled" : "";
 
             $tooltipTitle = !$usuarioLogueado ? "title='Debes iniciar sesión para votar'" : "";
 
@@ -62,6 +65,9 @@ class RankingTable
                 : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"like\", this)'";
             $onClickDislike = ($hayVariosSignificados || !$usuarioLogueado) ? ""
                 : "onclick='votar(\"{$w->palabra()}\", \"{$significado}\", \"dislike\", this)'";
+            $onClickDelete = ($hayVariosSignificados || !$usuarioLogueado) ? ""
+                : "onclick='eliminar(\"{$w->palabra()}\", this)'";
+
 
             $filas .= "<tr class='filaRankingTable' id='{$w->palabra()}' onclick='mostrarFicha(\"{$w->palabra()}\", \"{$significado}\", \"{$w->creador()}\")' style='cursor: pointer;'>
         <td>{$contador}</td>
@@ -72,6 +78,7 @@ class RankingTable
         <td class='reacciones'>
             <button type='button' name='accion' value='like' class='btn-like' {$estiloBotonLike} {$tooltipTitle} {$onClickLike}>👍</button>
             <button type='button' name='accion' value='dislike' class='btn-dislike' {$estiloBotonDislike} {$tooltipTitle} {$onClickDislike}>👎</button>
+            <button type='button' name='accion' value='delete' class='btn-delete' {$estiloBotonDelete} {$onClickDelete}>🗑️</button>
         </td>
     </tr>";
 
@@ -109,7 +116,7 @@ class RankingTable
                 <th>Significado</th>
                 <th>Creador</th>
                 <th>Votos</th>
-                <th>Reacciones</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
